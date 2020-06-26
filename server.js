@@ -15,6 +15,9 @@ if (process.env.NODE_ENV === 'development') {
 // Routes
 app.get('/', (req, res) => res.send('ok'));
 
+// Error handler middleware
+app.use(require('./middlewares/errorHandler'));
+
 // Port
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () =>

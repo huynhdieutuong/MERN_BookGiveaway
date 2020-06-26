@@ -12,8 +12,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.use(express.json());
+
 // Routes
-app.get('/', (req, res) => res.send('ok'));
+app.use('/api/auth', require('./routes/auth'));
 
 // Error handler middleware
 app.use(require('./middlewares/errorHandler'));

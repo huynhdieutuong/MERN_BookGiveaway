@@ -34,4 +34,14 @@ router.get('/confirmation/:token', authController.confirmationEmail);
 // @access  Private
 router.get('/resend', passportJWT, authController.resendEmail);
 
+// @route   POST  /api/auth/forgot-password
+// @desc    Forgot password
+// @access  Public
+router.post('/forgot-password', authController.forgotPassword);
+
+// @route   PUT  /api/auth/reset-password
+// @desc    Reset password
+// @access  Public
+router.put('/reset-password/:token', authController.resetPassword);
+
 module.exports = router;

@@ -93,3 +93,59 @@ exports.resendEmail = asyncHandler(async (req, res, next) => {
     message: `Check ${user.email} to active your account`,
   });
 });
+
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new ErrorResponse('Email does not exist', 400));
+  }
+
+  const token = await user.getConfirmationToken();
+
+  const tokenUrl = `${req.protocol}://${req.get(
+    'host'
+  )}/reset-password/${token}`;
+
+  await sendEmail({
+    email: user.email,
+    subject: 'Your BookGiveaway password reset request',
+    html: `<p>Hi ${user.name}</p><p>A request has been received to change the password for your BookGiveaway account.</p><p>By clicking on the following link, you are resetting your password.</p><p><a href='${tokenUrl}'>${tokenUrl}</a></p><p>If you did not initiate this request, please contact us immediately at support@bookgiveaway.com.</p>`,
+  });
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: `Check ${user.email} to reset your password`,
+  });
+});
+
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  // Get hashed token
+  const confirmationToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  // Check token
+  const user = await User.findOne({
+    confirmationToken,
+    tokenExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new ErrorResponse('Invalid token', 400));
+  }
+
+  // Reset password & remove confirmation token
+  user.password = req.body.password;
+  user.confirmationToken = undefined;
+  user.tokenExpire = undefined;
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'Password changed',
+  });
+});

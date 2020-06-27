@@ -29,4 +29,9 @@ router.get('/me', passportJWT, authController.getMe);
 // @access  Public
 router.get('/confirmation/:token', authController.confirmationEmail);
 
+// @route   GET  /api/auth/resend
+// @desc    Resend email to active account
+// @access  Private
+router.get('/resend', passportJWT, authController.resendEmail);
+
 module.exports = router;

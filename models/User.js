@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const beautifyUnique = require('mongoose-beautiful-unique-validation');
+const crypto = require('crypto');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -38,9 +39,9 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Please add a password'],
     minlength: [8, 'Password must at least 8 characters'],
-    maxlength: [50, 'Password must not over 50 characters'],
+    maxlength: [100, 'Password must not over 100 characters'],
     match: [
-      /^((?=.*\d)(?=.*[A-Z])(?=.*\W).{0,50})$/,
+      /^((?=.*\d)(?=.*[A-Z])(?=.*\W).{0,100})$/,
       'Password must contain digit, uppercase character and special symbol',
     ],
     select: false,
@@ -53,20 +54,39 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
+  confirmationToken: String,
+  tokenExpire: Date,
   createAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-UserSchema.pre('save', async function () {
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+
   this.password = await bcrypt.hash(this.password, 8);
 });
 
 UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+UserSchema.methods.getConfirmationToken = function () {
+  const token = crypto.randomBytes(20).toString('hex');
+
+  // Encrypt token
+  this.confirmationToken = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+
+  // Set expire to x hours
+  this.tokenExpire = Date.now() + process.env.TOKEN_EXPIRE * 60 * 60 * 1000;
+
+  return token;
 };
 
 UserSchema.plugin(beautifyUnique);

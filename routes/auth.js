@@ -24,4 +24,9 @@ router.post('/login', passportLogin, authController.login);
 // @access  Private
 router.get('/me', passportJWT, authController.getMe);
 
+// @route   GET  /api/auth/confirmation/:token
+// @desc    Confirmation email
+// @access  Public
+router.get('/confirmation/:token', authController.confirmationEmail);
+
 module.exports = router;

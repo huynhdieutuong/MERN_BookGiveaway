@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 const asyncHandler = require('../middlewares/asyncHandler');
 const ErrorResponse = require('../utils/ErrorResponse');
 const User = require('../models/User');
@@ -35,5 +37,34 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: req.user,
+  });
+});
+
+exports.confirmationEmail = asyncHandler(async (req, res, next) => {
+  // Get hashed token
+  const confirmationToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  // Check token
+  const user = await User.findOne({
+    confirmationToken,
+    tokenExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new ErrorResponse('Invalid token', 400));
+  }
+
+  // Active account & remove confirmation token
+  user.isActive = true;
+  user.confirmationToken = undefined;
+  user.tokenExpire = undefined;
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'Your account has been activated',
   });
 });

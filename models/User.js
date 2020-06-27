@@ -23,6 +23,10 @@ const UserSchema = new Schema({
     type: String,
     default: process.env.AVATAR_DEFAULT,
   },
+  role: {
+    type: String,
+    default: 'user',
+  },
   googleID: String,
   facebookID: String,
   email: {

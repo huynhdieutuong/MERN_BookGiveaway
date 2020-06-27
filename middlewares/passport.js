@@ -36,7 +36,9 @@ passport.use(
     async (email, password, done) => {
       try {
         // Check for user
-        const user = await User.findOne({ email }).select('password');
+        const user = await User.findOne({ email }).select(
+          'password wrongLogin'
+        );
         if (!user) {
           return done(
             { statusCode: 401, message: 'Invalid credentials' },
@@ -44,14 +46,32 @@ passport.use(
           );
         }
 
+        // Check if wrongLogin over 5 times
+        if (user.wrongLogin >= 5) {
+          return done(
+            {
+              statusCode: 401,
+              message:
+                'The account has been locked because of wrong login more than 5 times. Please contact the admin to unlock the account.',
+            },
+            false
+          );
+        }
+
         // Check for password
         const isMatch = await user.matchPassword(password);
         if (!isMatch) {
+          user.wrongLogin += 1;
+          await user.save();
+
           return done(
             { statusCode: 401, message: 'Invalid credentials' },
             false
           );
         }
+
+        user.wrongLogin = 0;
+        await user.save();
 
         done(null, user);
       } catch (error) {

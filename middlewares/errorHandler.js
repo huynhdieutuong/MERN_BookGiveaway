@@ -4,7 +4,9 @@ module.exports = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
 
-  // console.log(err);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(err);
+  }
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {

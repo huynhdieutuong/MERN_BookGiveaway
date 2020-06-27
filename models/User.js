@@ -65,6 +65,10 @@ UserSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, 8);
 });
 
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 UserSchema.plugin(beautifyUnique);
 
 module.exports = mongoose.model('User', UserSchema);

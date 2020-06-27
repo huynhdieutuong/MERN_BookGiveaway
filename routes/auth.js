@@ -1,11 +1,27 @@
 const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 
 const authController = require('../controllers/auth');
+const passportConf = require('../middlewares/passport');
+
+// Passport middlewares
+const passportLogin = passport.authenticate('local', { session: false });
+const passportJWT = passport.authenticate('jwt', { session: false });
 
 // @route   POST  /api/auth/register
 // @desc    Register user
 // @access  Public
 router.post('/register', authController.register);
+
+// @route   POST  /api/auth/login
+// @desc    Login user
+// @access  Public
+router.post('/login', passportLogin, authController.login);
+
+// @route   GET  /api/auth/me
+// @desc    Get logged in user
+// @access  Private
+router.get('/me', passportJWT, authController.getMe);
 
 module.exports = router;

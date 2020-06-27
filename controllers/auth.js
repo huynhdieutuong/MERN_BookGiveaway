@@ -10,3 +10,14 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   sendTokenResponse(user, 200, res);
 });
+
+exports.login = asyncHandler(async (req, res, next) => {
+  sendTokenResponse(req.user, 200, res);
+});
+
+exports.getMe = asyncHandler(async (req, res, next) => {
+  res.status(200).json({
+    success: true,
+    data: req.user,
+  });
+});

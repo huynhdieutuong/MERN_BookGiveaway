@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const beautifyUnique = require('mongoose-beautiful-unique-validation');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -66,6 +67,7 @@ const UserSchema = new Schema({
   },
 });
 
+// Encrypt password using bcrypt
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
@@ -74,10 +76,12 @@ UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 8);
 });
 
+// Match user entered password to hashed password in database
 UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Create confirmation token
 UserSchema.methods.getConfirmationToken = function () {
   const token = crypto.randomBytes(20).toString('hex');
 
@@ -91,6 +95,13 @@ UserSchema.methods.getConfirmationToken = function () {
   this.tokenExpire = Date.now() + process.env.TOKEN_EXPIRE * 60 * 60 * 1000;
 
   return token;
+};
+
+// Sign JWT and return
+UserSchema.methods.getSignedJwtToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
 };
 
 UserSchema.plugin(beautifyUnique);

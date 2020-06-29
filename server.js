@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const colors = require('colors');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
 // Connect Database
 require('./db')();
@@ -13,6 +14,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));

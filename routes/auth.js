@@ -8,6 +8,10 @@ const passportConf = require('../middlewares/passport');
 // Passport middlewares
 const passportLogin = passport.authenticate('local', { session: false });
 const passportJWT = passport.authenticate('jwt', { session: false });
+const passportGoogle = passport.authenticate('google', {
+  session: false,
+  scope: ['profile', 'email'],
+});
 
 // @route   POST  /api/auth/register
 // @desc    Register user
@@ -43,5 +47,12 @@ router.post('/forgot-password', authController.forgotPassword);
 // @desc    Reset password
 // @access  Public
 router.put('/reset-password/:token', authController.resetPassword);
+
+// @route   GET  /api/auth/google
+// @route   GET  /api/auth/google/callback
+// @desc    Login with google
+// @access  Public
+router.get('/google', passportGoogle);
+router.get('/google/callback', passportGoogle, authController.googleOAuth);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+var generatePassword = require('password-generator');
 
 const asyncHandler = require('../middlewares/asyncHandler');
 const ErrorResponse = require('../utils/ErrorResponse');
@@ -15,10 +16,10 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   const tokenUrl = `${req.protocol}://${req.get('host')}/confirmation/${token}`;
 
-  await sendEmail({
+  sendEmail({
     email,
     subject: 'Welcome To BookGiveaway! Confirm Your Email',
-    html: `<p>Hi ${name}</p><p>You're on your way! Let's confirm your email address.</p><p>By clicking on the following link, you are confirming your email address and agreeing to BookGiveaway's Terms of Service.</p><p><a href='${tokenUrl}'>${tokenUrl}</a></p>`,
+    html: `<p>Hi ${name},</p><p>You're on your way! Let's confirm your email address.</p><p>By clicking on the following link, you are confirming your email address and agreeing to BookGiveaway's Terms of Service.</p><p><a href='${tokenUrl}'>${tokenUrl}</a></p>`,
   });
 
   await user.save();
@@ -80,10 +81,10 @@ exports.resendEmail = asyncHandler(async (req, res, next) => {
 
   const tokenUrl = `${req.protocol}://${req.get('host')}/confirmation/${token}`;
 
-  await sendEmail({
+  sendEmail({
     email: user.email,
     subject: 'Confirm Your Email',
-    html: `<p>Hi ${user.name}</p><p>You're on your way! Let's confirm your email address.</p><p>By clicking on the following link, you are confirming your email address and agreeing to BookGiveaway's Terms of Service.</p><p><a href='${tokenUrl}'>${tokenUrl}</a></p>`,
+    html: `<p>Hi ${user.name},</p><p>You're on your way! Let's confirm your email address.</p><p>By clicking on the following link, you are confirming your email address and agreeing to BookGiveaway's Terms of Service.</p><p><a href='${tokenUrl}'>${tokenUrl}</a></p>`,
   });
 
   await user.save();
@@ -107,10 +108,10 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     'host'
   )}/reset-password/${token}`;
 
-  await sendEmail({
+  sendEmail({
     email: user.email,
     subject: 'Your BookGiveaway password reset request',
-    html: `<p>Hi ${user.name}</p><p>A request has been received to change the password for your BookGiveaway account.</p><p>By clicking on the following link, you are resetting your password.</p><p><a href='${tokenUrl}'>${tokenUrl}</a></p><p>If you did not initiate this request, please contact us immediately at support@bookgiveaway.com.</p>`,
+    html: `<p>Hi ${user.name},</p><p>A request has been received to change the password for your BookGiveaway account.</p><p>By clicking on the following link, you are resetting your password.</p><p><a href='${tokenUrl}'>${tokenUrl}</a></p><p>If you did not initiate this request, please contact us immediately at support@bookgiveaway.com.</p>`,
   });
 
   await user.save();
@@ -148,4 +149,35 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     success: true,
     message: 'Password changed',
   });
+});
+
+exports.googleOAuth = asyncHandler(async (req, res, next) => {
+  // If new user
+  if (req.user.new) {
+    const { name, email, googleID, avatarUrl } = req.user;
+
+    const password = generatePassword(12, false, /\w/, 'B@2');
+
+    const newUser = await User.create({
+      name,
+      email,
+      googleID,
+      avatarUrl,
+      isActive: true,
+      password,
+      username: googleID.slice(0, 5) + Date.now(),
+    });
+
+    // Send email include password for user
+    sendEmail({
+      email,
+      subject: 'Welcome To BookGiveaway! Your Account Password',
+      html: `<p>Hi ${name},</p><p>Welcome to BookGiveaway!</p><p>Your new account password: <strong>${password}</strong></p><p>You can change the password whenever you want in the profile.</p><p>Thanks!</p>`,
+    });
+
+    return sendTokenResponse(newUser, 200, res);
+  }
+
+  // If user exists
+  sendTokenResponse(req.user, 200, res);
 });

@@ -12,6 +12,9 @@ const passportGoogle = passport.authenticate('google', {
   session: false,
   scope: ['profile', 'email'],
 });
+const passportFacebook = passport.authenticate('facebook', {
+  session: false,
+});
 
 // @route   POST  /api/auth/register
 // @desc    Register user
@@ -53,6 +56,13 @@ router.put('/reset-password/:token', authController.resetPassword);
 // @desc    Login with google
 // @access  Public
 router.get('/google', passportGoogle);
-router.get('/google/callback', passportGoogle, authController.googleOAuth);
+router.get('/google/callback', passportGoogle, authController.socialOAuth);
+
+// @route   GET  /api/auth/facebook
+// @route   GET  /api/auth/facebook/callback
+// @desc    Login with facebook
+// @access  Public
+router.get('/facebook', passportFacebook);
+router.get('/facebook/callback', passportFacebook, authController.socialOAuth);
 
 module.exports = router;

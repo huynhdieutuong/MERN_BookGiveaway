@@ -151,33 +151,50 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.googleOAuth = asyncHandler(async (req, res, next) => {
-  // If new user
-  if (req.user.new) {
-    const { name, email, googleID, avatarUrl } = req.user;
+exports.socialOAuth = asyncHandler(async (req, res, next) => {
+  const { id, displayName, emails, photos, type } = req.user;
 
-    const password = generatePassword(12, false, /\w/, 'B@2');
+  let user;
+  if (type === 'google') user = await User.findOne({ googleID: id });
+  if (type === 'facebook') user = await User.findOne({ facebookID: id });
 
-    const newUser = await User.create({
-      name,
-      email,
-      googleID,
-      avatarUrl,
-      isActive: true,
-      password,
-      username: googleID.slice(0, 5) + Date.now(),
-    });
+  // if not user
+  if (!user) {
+    const userByEmail = await User.findOne({ email: emails[0].value });
 
-    // Send email include password for user
-    sendEmail({
-      email,
-      subject: 'Welcome To BookGiveaway! Your Account Password',
-      html: `<p>Hi ${name},</p><p>Welcome to BookGiveaway!</p><p>Your new account password: <strong>${password}</strong></p><p>You can change the password whenever you want in the profile.</p><p>Thanks!</p>`,
-    });
+    // If not userByEmail, create new user
+    if (!userByEmail) {
+      const password = generatePassword(12, false, /\w/, 'B@2');
 
-    return sendTokenResponse(newUser, 200, res);
+      user = new User({
+        name: displayName,
+        email: emails[0].value,
+        avatarUrl: photos[0].value,
+        isActive: true,
+        password,
+        username: id.slice(0, 5) + Date.now(),
+      });
+
+      if (type === 'google') user.googleID = id;
+      if (type === 'facebook') user.facebookID = id;
+
+      await user.save();
+
+      // Send email include password for user
+      sendEmail({
+        email: user.email,
+        subject: 'Welcome To BookGiveaway! Your Account Password',
+        html: `<p>Hi ${user.name},</p><p>Welcome to BookGiveaway!</p><p>Your new account password: <strong>${password}</strong></p><p>You can change the password whenever you want in the profile.</p><p>Thanks!</p>`,
+      });
+    } else {
+      // if userByEmail exist but not socialID, connect socialID
+      user = userByEmail;
+      if (type === 'google') user.googleID = id;
+      if (type === 'facebook') user.facebookID = id;
+
+      await user.save();
+    }
   }
 
-  // If user exists
-  sendTokenResponse(req.user, 200, res);
+  sendTokenResponse(user, 200, res);
 });

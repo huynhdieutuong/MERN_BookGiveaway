@@ -18,4 +18,14 @@ router.get('/', profileController.getProfile);
 // @access  Private
 router.put('/', profileController.updateProfile);
 
+// @route   PUT  /api/profile/password
+// @desc    Change password
+// @access  Private
+router.put('/password', profileController.changePassword);
+
+// @route   PUT  /api/profile/email
+// @desc    Change email
+// @access  Private
+router.put('/email', profileController.changeEmail);
+
 module.exports = router;

@@ -34,13 +34,6 @@ exports.login = asyncHandler(async (req, res, next) => {
   sendTokenResponse(req.user, 200, res);
 });
 
-exports.getMe = asyncHandler(async (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    data: req.user,
-  });
-});
-
 exports.confirmationEmail = asyncHandler(async (req, res, next) => {
   // Get hashed token
   const confirmationToken = crypto

@@ -3,7 +3,6 @@ const passport = require('passport');
 const router = express.Router();
 
 const authController = require('../controllers/auth');
-const passportConf = require('../middlewares/passport');
 
 // Passport middlewares
 const passportLogin = passport.authenticate('local', { session: false });
@@ -25,11 +24,6 @@ router.post('/register', authController.register);
 // @desc    Login user
 // @access  Public
 router.post('/login', passportLogin, authController.login);
-
-// @route   GET  /api/auth/me
-// @desc    Get logged in user
-// @access  Private
-router.get('/me', passportJWT, authController.getMe);
 
 // @route   GET  /api/auth/confirmation/:token
 // @desc    Confirmation email

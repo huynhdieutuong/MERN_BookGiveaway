@@ -7,3 +7,18 @@ exports.getProfile = asyncHandler(async (req, res, next) => {
     data: req.user,
   });
 });
+
+exports.updateProfile = asyncHandler(async (req, res, next) => {
+  const user = req.user;
+  const { name, username } = req.body;
+
+  user.name = name;
+  user.username = username;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});

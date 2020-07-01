@@ -28,4 +28,9 @@ router.put('/password', profileController.changePassword);
 // @access  Private
 router.put('/email', profileController.changeEmail);
 
+// @route   PUT  /api/profile/avatar
+// @desc    Change avatar
+// @access  Private
+router.put('/avatar', profileController.changeAvatar);
+
 module.exports = router;

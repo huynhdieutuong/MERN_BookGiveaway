@@ -4,12 +4,16 @@ const app = express();
 const colors = require('colors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const cloudinary = require('cloudinary').v2;
 
 // Passport
 require('./middlewares/passport');
 
 // Connect Database
 require('./db')();
+
+// Cloudinary
+cloudinary.config(process.env.CLOUDINARY_URL);
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {

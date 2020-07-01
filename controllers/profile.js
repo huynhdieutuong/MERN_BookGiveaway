@@ -1,3 +1,7 @@
+const cloudinary = require('cloudinary').v2;
+const formidable = require('formidable');
+const form = formidable();
+
 const asyncHandler = require('../middlewares/asyncHandler');
 const ErrorResponse = require('../utils/ErrorResponse');
 const User = require('../models/User');
@@ -79,5 +83,42 @@ exports.changeEmail = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: 'Email changed. Please check your mail to confirm new email.',
+  });
+});
+
+exports.changeAvatar = asyncHandler(async (req, res, next) => {
+  const user = req.user;
+
+  form.parse(req, async (err, fields, files) => {
+    let { size, path, name, type } = files.avatar;
+
+    // Make sure the file is a photo
+    if (!type.startsWith('image'))
+      return next(new ErrorResponse('Please upload an image file', 400));
+
+    // Check image size
+    if (size > process.env.MAX_SIZE * 1024 * 1024)
+      return next(
+        new ErrorResponse(
+          `Please upload an image less than ${process.env.MAX_SIZE} MB`,
+          400
+        )
+      );
+
+    // Create custom filename
+    name = `avatar_${user._id}_${Date.now()}`;
+
+    // Upload cloudinary
+    result = await cloudinary.uploader.upload(path, {
+      public_id: 'BookGiveaway/Avatars/' + name,
+    });
+
+    user.avatarUrl = result.url;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
   });
 });

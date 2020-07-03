@@ -13,6 +13,16 @@ router.post('/', categoriesController.createCategory);
 // @access  Private
 router.get('/:slug', categoriesController.getCategory);
 
+// @route   PUT  /api/categories/:slug
+// @desc    Rename category
+// @access  Private
+router.put('/:slug', categoriesController.renameCategory);
+
+// @route   DELETE  /api/categories/:slug
+// @desc    Delete category
+// @access  Private
+router.delete('/:slug', categoriesController.deleteCategory);
+
 // @route   GET  /api/categories/:slug/descendants
 // @desc    Get category's descendants
 // @access  Private

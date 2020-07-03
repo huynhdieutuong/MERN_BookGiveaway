@@ -29,6 +29,40 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.renameCategory = asyncHandler(async (req, res, next) => {
+  const category = await Category.findOne({ slug: req.params.slug }).populate({
+    path: 'parent ancestors',
+    select: 'name slug',
+  });
+
+  if (!category) return next(new ErrorResponse('Not found category', 404));
+
+  category.name = req.body.name;
+  await category.save();
+
+  res.status(200).json({
+    success: true,
+    data: category,
+  });
+});
+
+exports.deleteCategory = asyncHandler(async (req, res, next) => {
+  const category = await Category.findOne({ slug: req.params.slug }).populate({
+    path: 'parent ancestors',
+    select: 'name slug',
+  });
+
+  if (!category) return next(new ErrorResponse('Not found category', 404));
+
+  await Category.deleteMany({ ancestors: category._id });
+  await category.remove();
+
+  res.status(200).json({
+    success: true,
+    message: `Category & Descendants deleted`,
+  });
+});
+
 exports.getDescendants = asyncHandler(async (req, res, next) => {
   const category = await Category.findOne({ slug: req.params.slug });
 

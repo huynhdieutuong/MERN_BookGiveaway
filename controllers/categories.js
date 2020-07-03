@@ -5,14 +5,9 @@ const Category = require('../models/Category');
 exports.createCategory = asyncHandler(async (req, res, next) => {
   const { name, parent } = req.body;
 
-  const category = new Category({ name });
+  const category = await Category.create({ name });
 
-  if (parent) {
-    category.parent = parent;
-    await buildAncestors(category, parent);
-  }
-
-  await category.save();
+  await buildAncestors(category, parent);
 
   res.status(201).json({
     success: true,
@@ -49,11 +44,38 @@ exports.getDescendants = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.changeParent = asyncHandler(async (req, res, next) => {
+  const category = await Category.findOne({ slug: req.params.slug });
+
+  if (!category) return next(new ErrorResponse('Not found category', 404));
+
+  await buildHierarchyAncestors(category, req.body.newParent);
+
+  res.status(200).json({
+    success: true,
+    data: category,
+  });
+});
+
 // Build Ancestors
 const buildAncestors = async (category, parentId) => {
   const parentCategory = await Category.findById(parentId);
 
   if (parentCategory) {
+    category.parent = parentId;
     category.ancestors = [...parentCategory.ancestors, parentId];
+  }
+
+  await category.save();
+};
+
+// Build Hierarchy Ancestors
+const buildHierarchyAncestors = async (category, parentId) => {
+  await buildAncestors(category, parentId);
+
+  const result = await Category.find({ parent: category._id });
+
+  if (result) {
+    result.forEach((doc) => buildHierarchyAncestors(doc, category._id));
   }
 };

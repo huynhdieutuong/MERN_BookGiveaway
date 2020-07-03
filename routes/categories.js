@@ -18,4 +18,9 @@ router.get('/:slug', categoriesController.getCategory);
 // @access  Private
 router.get('/:slug/descendants', categoriesController.getDescendants);
 
+// @route   PUT  /api/categories/:slug/change-parent
+// @desc    Change category's parent
+// @access  Private
+router.put('/:slug/change-parent', categoriesController.changeParent);
+
 module.exports = router;

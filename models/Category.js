@@ -20,6 +20,10 @@ const CategorySchema = new Schema({
 });
 
 CategorySchema.pre('save', async function (next) {
+  if (!this.isModified('name')) {
+    next();
+  }
+
   const slug = slugify(this.name, { lower: true });
 
   const slugExists = await this.model('Category').findOne({ slug });

@@ -1,36 +1,43 @@
 const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 
 const categoriesController = require('../controllers/categories');
+const requiredAdmin = require('../middlewares/requiredAdmin');
 
-// @route   POST  /api/categories
-// @desc    Create category
-// @access  Private
-router.post('/', categoriesController.createCategory);
+const passportJWT = passport.authenticate('jwt', { session: false });
 
 // @route   GET  /api/categories/:slug
 // @desc    Get category
-// @access  Private
+// @access  Public
 router.get('/:slug', categoriesController.getCategory);
+
+// @route   GET  /api/categories/:slug/descendants
+// @desc    Get category's descendants
+// @access  Public
+router.get('/:slug/descendants', categoriesController.getDescendants);
+
+router.use(passportJWT);
+router.use(requiredAdmin);
+
+// @route   POST  /api/categories
+// @desc    Create category
+// @access  Private admin
+router.post('/', categoriesController.createCategory);
 
 // @route   PUT  /api/categories/:slug
 // @desc    Rename category
-// @access  Private
+// @access  Private admin
 router.put('/:slug', categoriesController.renameCategory);
 
 // @route   DELETE  /api/categories/:slug
 // @desc    Delete category
-// @access  Private
+// @access  Private admin
 router.delete('/:slug', categoriesController.deleteCategory);
-
-// @route   GET  /api/categories/:slug/descendants
-// @desc    Get category's descendants
-// @access  Private
-router.get('/:slug/descendants', categoriesController.getDescendants);
 
 // @route   PUT  /api/categories/:slug/change-parent
 // @desc    Change category's parent
-// @access  Private
+// @access  Private admin
 router.put('/:slug/change-parent', categoriesController.changeParent);
 
 module.exports = router;

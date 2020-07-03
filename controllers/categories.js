@@ -20,6 +20,35 @@ exports.createCategory = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.getCategory = asyncHandler(async (req, res, next) => {
+  const category = await Category.findOne({ slug: req.params.slug }).populate({
+    path: 'parent ancestors',
+    select: 'name slug',
+  });
+
+  if (!category) return next(new ErrorResponse('Not found category', 404));
+
+  res.status(200).json({
+    success: true,
+    data: category,
+  });
+});
+
+exports.getDescendants = asyncHandler(async (req, res, next) => {
+  const category = await Category.findOne({ slug: req.params.slug });
+
+  if (!category) return next(new ErrorResponse('Not found category', 404));
+
+  const categories = await Category.find({
+    ancestors: category._id,
+  }).select('name slug');
+
+  res.status(200).json({
+    success: true,
+    data: categories,
+  });
+});
+
 // Build Ancestors
 const buildAncestors = async (category, parentId) => {
   const parentCategory = await Category.findById(parentId);

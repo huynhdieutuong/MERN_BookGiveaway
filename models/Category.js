@@ -16,7 +16,7 @@ const CategorySchema = new Schema({
     ref: 'Category',
     default: null,
   },
-  ancestors: [Schema.Types.ObjectId],
+  ancestors: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
 });
 
 CategorySchema.pre('save', async function (next) {

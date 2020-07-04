@@ -11,10 +11,10 @@ const passportJWT = passport.authenticate('jwt', { session: false });
 // @access  Public
 router.get('/', booksController.getBooks);
 
-// @route   GET  /api/books/:slug
+// @route   GET  /api/books/:id
 // @desc    Get single book
 // @access  Public
-router.get('/:slug', booksController.getBook);
+router.get('/:id', booksController.getBook);
 
 router.use(passportJWT);
 
@@ -23,14 +23,14 @@ router.use(passportJWT);
 // @access  Private owner or admin
 router.post('/', booksController.createBook);
 
-// @route   PUT  /api/books/:slug
+// @route   PUT  /api/books/:id
 // @desc    Edit book
 // @access  Private owner or admin
-router.put('/:slug', booksController.editBook);
+router.put('/:id', booksController.editBook);
 
-// @route   DELETE  /api/books/:slug
+// @route   DELETE  /api/books/:id
 // @desc    Delete book
 // @access  Private owner or admin
-router.delete('/:slug', booksController.deleteBook);
+router.delete('/:id', booksController.deleteBook);
 
 module.exports = router;

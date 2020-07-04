@@ -52,7 +52,7 @@ BookSchema.pre('save', async function (next) {
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
     .join(' ');
 
-  this.slug = slugify(this.title + '.' + Date.now(), { lower: true });
+  this.slug = slugify(this.title + '.' + this._id, { lower: true });
   next();
 });
 

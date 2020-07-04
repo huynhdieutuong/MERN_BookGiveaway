@@ -27,6 +27,7 @@ app.use(cookieParser());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/profile', require('./routes/profile'));
 app.use('/api/categories', require('./routes/categories'));
+app.use('/api/books', require('./routes/books'));
 
 // Error handler middleware
 app.use(require('./middlewares/errorHandler'));

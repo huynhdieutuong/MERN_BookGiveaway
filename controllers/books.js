@@ -8,7 +8,18 @@ const Book = require('../models/Book');
 
 exports.getBooks = asyncHandler(async (req, res, next) => {});
 
-exports.getBook = asyncHandler(async (req, res, next) => {});
+exports.getBook = asyncHandler(async (req, res, next) => {
+  const book = await Book.findOne({ slug: req.params.slug })
+    .populate('category')
+    .populate({ path: 'user', select: 'name username' });
+
+  if (!book) return next(new ErrorResponse('Book not found', 404));
+
+  res.status(200).json({
+    success: true,
+    data: book,
+  });
+});
 
 exports.createBook = asyncHandler(async (req, res, next) => {
   form.parse(req, async (err, fields, files) => {

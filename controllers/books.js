@@ -74,7 +74,18 @@ exports.editBook = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.deleteBook = asyncHandler(async (req, res, next) => {});
+exports.deleteBook = asyncHandler(async (req, res, next) => {
+  const book = await Book.findById(req.params.id);
+
+  if (!book) return next(new ErrorResponse('Book not found', 404));
+
+  await book.remove();
+
+  res.status(200).json({
+    success: true,
+    message: 'Book deleted',
+  });
+});
 
 // Upload images
 const uploadImages = async (filesImages, book, edit = false) => {

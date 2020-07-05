@@ -24,10 +24,21 @@ CategorySchema.pre('save', async function (next) {
     next();
   }
 
-  const slug = slugify(this.name, { lower: true });
+  let slug = slugify(this.name, { lower: true });
 
-  const slugExists = await this.model('Category').findOne({ slug });
-  if (slugExists) return next(new ErrorResponse('Duplicate slug', 400));
+  if (this.parent) {
+    const firstAncestor = await this.model('Category').findById(
+      this.ancestors[0]
+    );
+    slug = firstAncestor.slug + '.' + slug;
+  }
+
+  const slugExists = await this.model('Category').find({
+    slug: new RegExp(slug, 'g'),
+  });
+  if (slugExists.length) {
+    slug = slug + '-' + slugExists.length;
+  }
 
   this.slug = slug;
   next();

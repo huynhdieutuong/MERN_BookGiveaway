@@ -10,8 +10,18 @@ exports.getBooks = asyncHandler(async (req, res, next) => {});
 
 exports.getBook = asyncHandler(async (req, res, next) => {
   const book = await Book.findById(req.params.id)
-    .populate('category')
-    .populate({ path: 'user', select: 'name username' });
+    .populate({
+      path: 'category',
+      select: 'name slug ancestors',
+      populate: {
+        path: 'ancestors',
+        select: 'name slug',
+      },
+    })
+    .populate({
+      path: 'user',
+      select: 'name username',
+    });
 
   if (!book) return next(new ErrorResponse('Book not found', 404));
 
@@ -51,8 +61,18 @@ exports.createBook = asyncHandler(async (req, res, next) => {
 exports.editBook = asyncHandler(async (req, res, next) => {
   form.parse(req, async (err, fields, files) => {
     const book = await Book.findById(req.params.id)
-      .populate('category')
-      .populate({ path: 'user', select: 'name username' });
+      .populate({
+        path: 'category',
+        select: 'name slug ancestors',
+        populate: {
+          path: 'ancestors',
+          select: 'name slug',
+        },
+      })
+      .populate({
+        path: 'user',
+        select: 'name username',
+      });
 
     if (!book) return next(new ErrorResponse('Book not found', 404));
 

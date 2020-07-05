@@ -5,7 +5,7 @@ const Category = require('../models/Category');
 exports.createCategory = asyncHandler(async (req, res, next) => {
   const { name, parent } = req.body;
 
-  const category = await Category.create({ name });
+  const category = new Category({ name });
 
   await buildAncestors(category, parent);
 

@@ -30,10 +30,12 @@ exports.createBook = asyncHandler(async (req, res, next) => {
       description,
       author,
       category,
-      user: req.user._id,
+      user: req.user.id,
     });
 
-    const imageUrls = await uploadImages(files.images, book);
+    // Upload images
+    const imageUrls = await uploadImages(next, files.images, book);
+    if (!imageUrls) return;
 
     // Create new book
     if (files.images) book.imageUrls = imageUrls;
@@ -54,7 +56,18 @@ exports.editBook = asyncHandler(async (req, res, next) => {
 
     if (!book) return next(new ErrorResponse('Book not found', 404));
 
-    const imageUrls = await uploadImages(files.images, book, true);
+    // Make sure user is book user
+    if (req.user.role !== 'admin' && req.user.id !== book.user.id)
+      return next(
+        new ErrorResponse(
+          `User ${req.user.id} is not authorized to edit this book`,
+          401
+        )
+      );
+
+    // Upload images
+    const imageUrls = await uploadImages(next, files.images, book, true);
+    if (!imageUrls) return;
 
     // Edit book
     const { title, description, author, category } = fields;
@@ -79,6 +92,15 @@ exports.deleteBook = asyncHandler(async (req, res, next) => {
 
   if (!book) return next(new ErrorResponse('Book not found', 404));
 
+  // Make sure user is book user
+  if (req.user.role !== 'admin' && req.user.id !== book.user.toString())
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to delete this book`,
+        401
+      )
+    );
+
   await book.remove();
 
   res.status(200).json({
@@ -88,7 +110,7 @@ exports.deleteBook = asyncHandler(async (req, res, next) => {
 });
 
 // Upload images
-const uploadImages = async (filesImages, book, edit = false) => {
+const uploadImages = async (next, filesImages, book, edit = false) => {
   const imageUrls = edit ? [...book.imageUrls] : [];
 
   // Validate images

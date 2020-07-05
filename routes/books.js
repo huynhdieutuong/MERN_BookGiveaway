@@ -20,7 +20,7 @@ router.use(passportJWT);
 
 // @route   POST  /api/books
 // @desc    Create book
-// @access  Private owner or admin
+// @access  Private
 router.post('/', booksController.createBook);
 
 // @route   PUT  /api/books/:id

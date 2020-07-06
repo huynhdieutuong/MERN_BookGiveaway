@@ -3,13 +3,15 @@ const passport = require('passport');
 const router = express.Router();
 
 const booksController = require('../controllers/books');
+const Book = require('../models/Book');
+const advancedResults = require('../middlewares/advancedResults');
 
 const passportJWT = passport.authenticate('jwt', { session: false });
 
 // @route   GET  /api/books
 // @desc    Get books
 // @access  Public
-router.get('/', booksController.getBooks);
+router.get('/', advancedResults(Book), booksController.getBooks);
 
 // @route   GET  /api/books/:id
 // @desc    Get single book

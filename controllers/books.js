@@ -6,7 +6,9 @@ const asyncHandler = require('../middlewares/asyncHandler');
 const ErrorResponse = require('../utils/ErrorResponse');
 const Book = require('../models/Book');
 
-exports.getBooks = asyncHandler(async (req, res, next) => {});
+exports.getBooks = asyncHandler(async (req, res, next) => {
+  res.status(200).json(res.advancedResults);
+});
 
 exports.getBook = asyncHandler(async (req, res, next) => {
   const book = await Book.findById(req.params.id)
@@ -136,6 +138,8 @@ const uploadImages = async (next, filesImages, book, edit = false) => {
   // Validate images
   if (filesImages) {
     const images = [];
+
+    if (!Array.isArray(filesImages)) filesImages = [filesImages];
 
     for (const image of filesImages) {
       let { size, path, name, type } = image;

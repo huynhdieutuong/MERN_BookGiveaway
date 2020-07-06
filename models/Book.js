@@ -41,16 +41,11 @@ const BookSchema = new Schema({
   },
 });
 
-// Create slug & Capitalize title
+// Create slug
 BookSchema.pre('save', async function (next) {
   if (!this.isModified('title')) {
     next();
   }
-
-  const words = this.title.split(' ');
-  this.title = words
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-    .join(' ');
 
   this.slug = slugify(this.title + '.' + this._id, { lower: true });
   next();

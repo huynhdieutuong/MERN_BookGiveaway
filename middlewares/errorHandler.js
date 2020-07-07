@@ -8,6 +8,12 @@ module.exports = (err, req, res, next) => {
     console.log(err);
   }
 
+  // Cast Error
+  if (err.name === 'CastError') {
+    const message = `Resource not found with id of ${err.value}`;
+    error = new ErrorResponse(message, 404);
+  }
+
   // Mongoose validation error
   if (err.name === 'ValidationError') {
     const message = Object.values(err.errors).map((val) => val.message);

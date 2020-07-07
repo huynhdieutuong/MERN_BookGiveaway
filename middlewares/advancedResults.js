@@ -1,20 +1,42 @@
+const Category = require('../models/Category');
+
 module.exports = (model, populate) => async (req, res, next) => {
-  let { key, sort, select, page, limit } = req.query;
+  let { cat, key, sort, select, page, limit } = req.query;
   let query;
   let total;
 
-  // Search keyword
-  if (key) {
-    const queryKey = {
-      $or: [{ title: new RegExp(key, 'i') }, { author: new RegExp(key, 'i') }],
-    };
+  // Search by keyword & category
+  let querySearch = {};
 
-    query = model.find(queryKey);
-    total = await model.countDocuments(queryKey);
-  } else {
-    query = model.find();
-    total = await model.countDocuments();
+  if (key || cat) {
+    let queryKey = {};
+    if (key) {
+      queryKey = {
+        $or: [
+          { title: new RegExp(key, 'i') },
+          { author: new RegExp(key, 'i') },
+        ],
+      };
+    }
+
+    let queryCat = {};
+    if (cat) {
+      // Get descendants
+      const categories = await Category.find({ ancestors: cat });
+      const arrCats = [{ category: cat }];
+
+      categories.forEach((ca) => {
+        arrCats.push({ category: ca.id });
+      });
+
+      queryCat = { $or: arrCats };
+    }
+
+    querySearch = { $and: [queryKey, queryCat] };
   }
+
+  query = model.find(querySearch);
+  total = await model.countDocuments(querySearch);
 
   // Select fields
   if (select) {

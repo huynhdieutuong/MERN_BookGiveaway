@@ -16,10 +16,12 @@ exports.createCategory = asyncHandler(async (req, res, next) => {
 });
 
 exports.getCategory = asyncHandler(async (req, res, next) => {
-  const category = await Category.findOne({ slug: req.params.slug }).populate({
-    path: 'parent ancestors',
-    select: 'name slug',
-  });
+  const category = await Category.findOne({ slug: req.params.slug })
+    .populate({
+      path: 'parent ancestors',
+      select: 'name slug',
+    })
+    .populate('books');
 
   if (!category) return next(new ErrorResponse('Not found category', 404));
 

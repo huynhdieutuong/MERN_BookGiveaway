@@ -11,7 +11,7 @@ const passportJWT = passport.authenticate('jwt', { session: false });
 // @route   GET  /api/books
 // @desc    Get books
 // @access  Public
-router.get('/', advancedResults(Book), booksController.getBooks);
+router.get('/', advancedResults('books', Book), booksController.getBooks);
 
 // @route   GET  /api/books/:id
 // @desc    Get single book

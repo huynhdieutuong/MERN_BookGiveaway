@@ -4,6 +4,10 @@ const Book = require('../models/Book');
 const Request = require('../models/Request');
 const Notification = require('../models/Notification');
 
+exports.getRequests = asyncHandler(async (req, res, next) => {
+  res.status(200).json(res.advancedResults);
+});
+
 exports.createRequest = asyncHandler(async (req, res, next) => {
   const book = await Book.findById(req.params.bookId);
 

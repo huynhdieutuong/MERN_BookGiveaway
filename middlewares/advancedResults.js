@@ -1,14 +1,19 @@
 const Category = require('../models/Category');
 
-module.exports = (model, populate) => async (req, res, next) => {
+module.exports = (route, model, populate) => async (req, res, next) => {
   let { cat, key, sort, select, page, limit } = req.query;
   let query;
   let total;
 
-  // Search by keyword & category
   let querySearch = {};
 
-  if (key || cat) {
+  // Get requests by bookId
+  if (route === 'requests' && req.params.bookId) {
+    querySearch = { book: req.params.bookId };
+  }
+
+  // Get books by keyword & category
+  if (route === 'books' && (key || cat)) {
     let queryKey = {};
     if (key) {
       queryKey = {

@@ -39,3 +39,24 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
     data: request,
   });
 });
+
+exports.deleteRequest = asyncHandler(async (req, res, next) => {
+  const request = await Request.findById(req.params.id);
+
+  if (!request) return next(new ErrorResponse('Request not found', 404));
+
+  // Make sure user is request user
+  if (req.user.role !== 'admin' && req.user.id !== request.user.toString())
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to delete this request`
+      )
+    );
+
+  await request.remove();
+
+  res.status(200).json({
+    success: true,
+    message: 'Request deleted',
+  });
+});

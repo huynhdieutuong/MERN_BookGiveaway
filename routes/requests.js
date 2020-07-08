@@ -40,4 +40,9 @@ router.get(
 // @access  Private
 router.post('/', requestsController.createRequest);
 
+// @route   DELETE  /api/requests/:id
+// @desc    Delete request
+// @access  Private
+router.delete('/:id', requestsController.deleteRequest);
+
 module.exports = router;

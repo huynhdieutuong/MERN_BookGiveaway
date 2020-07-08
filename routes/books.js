@@ -35,4 +35,7 @@ router.put('/:id', booksController.editBook);
 // @access  Private owner or admin
 router.delete('/:id', booksController.deleteBook);
 
+// Re-route into other resource routers
+router.use('/:bookId/requests', require('./requests'));
+
 module.exports = router;

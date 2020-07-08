@@ -35,6 +35,10 @@ const BookSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  isGave: {
+    type: Boolean,
+    default: false,
+  },
   createAt: {
     type: Date,
     default: Date.now,

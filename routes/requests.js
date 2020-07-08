@@ -15,8 +15,8 @@ const passportJWT = passport.authenticate('jwt', { session: false });
 router.get(
   '/',
   advancedResults('requests', Request, {
-    path: 'user',
-    select: 'name username avatarUrl',
+    path: 'user book',
+    select: 'name username avatarUrl title imageUrls slug',
   }),
   requestsController.getRequests
 );

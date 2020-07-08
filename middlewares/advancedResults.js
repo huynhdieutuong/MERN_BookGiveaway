@@ -1,7 +1,8 @@
 const Category = require('../models/Category');
+const Notification = require('../models/Notification');
 
 module.exports = (route, model, populate) => async (req, res, next) => {
-  let { cat, key, sort, select, page, limit } = req.query;
+  let { book, user, cat, key, sort, select, page, limit } = req.query;
   let query;
   let total;
 
@@ -12,9 +13,26 @@ module.exports = (route, model, populate) => async (req, res, next) => {
     querySearch = { book: req.params.bookId };
   }
 
+  // Get all requests (required admin)
+  if (route === 'requests' && !req.params.bookId) {
+    if (book) querySearch = { book };
+    if (user) querySearch = { user };
+  }
+
   // Get requests by userId
   if (route === 'myRequests') {
     querySearch = { user: req.user.id };
+  }
+
+  // Get notifications by userId
+  if (route === 'notifications') {
+    querySearch = { owner: req.user.id };
+  }
+
+  // Mark all read & Get notifications by userId
+  if (route === 'markAllRead') {
+    await Notification.updateMany({ owner: req.user.id }, { isRead: true });
+    querySearch = { owner: req.user.id };
   }
 
   // Get books by keyword & category

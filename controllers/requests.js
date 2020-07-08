@@ -49,7 +49,8 @@ exports.deleteRequest = asyncHandler(async (req, res, next) => {
   if (req.user.role !== 'admin' && req.user.id !== request.user.toString())
     return next(
       new ErrorResponse(
-        `User ${req.user.id} is not authorized to delete this request`
+        `User ${req.user.id} is not authorized to delete this request`,
+        401
       )
     );
 

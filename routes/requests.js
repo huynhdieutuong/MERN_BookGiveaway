@@ -8,8 +8,6 @@ const Request = require('../models/Request');
 
 const passportJWT = passport.authenticate('jwt', { session: false });
 
-router.use(passportJWT);
-
 // @route   GET  /api/requests
 // @route   GET  /api/books/:bookId/requests
 // @desc    Get requests (Enter giveaway)
@@ -19,6 +17,20 @@ router.get(
   advancedResults('requests', Request, {
     path: 'user',
     select: 'name username avatarUrl',
+  }),
+  requestsController.getRequests
+);
+
+router.use(passportJWT);
+
+// @route   GET  /api/requests/my
+// @desc    Get all my requests
+// @access  Private
+router.get(
+  '/my',
+  advancedResults('myRequests', Request, {
+    path: 'book',
+    select: 'imageUrls title slug',
   }),
   requestsController.getRequests
 );

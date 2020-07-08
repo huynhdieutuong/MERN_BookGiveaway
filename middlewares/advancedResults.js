@@ -12,6 +12,11 @@ module.exports = (route, model, populate) => async (req, res, next) => {
     querySearch = { book: req.params.bookId };
   }
 
+  // Get requests by userId
+  if (route === 'myRequests') {
+    querySearch = { user: req.user.id };
+  }
+
   // Get books by keyword & category
   if (route === 'books' && (key || cat)) {
     let queryKey = {};

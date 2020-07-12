@@ -64,3 +64,32 @@ exports.createTransaction = asyncHandler(async (req, res, next) => {
     data: transaction,
   });
 });
+
+exports.changeStatus = asyncHandler(async (req, res, next) => {
+  const transaction = await Transaction.findById(req.params.id).populate({
+    path: 'book giver receiver',
+    select: 'name avatarUrl title imageUrls slug',
+  });
+
+  if (!transaction)
+    return next(new ErrorResponse('Transaction not found', 404));
+
+  // Only receiver can change transaction status
+  if (req.user.id !== transaction.receiver.id)
+    return next(
+      new ErrorResponse('Only receiver can change transaction status', 400)
+    );
+
+  // Prevent receiver re-change status
+  if (transaction.status !== 'pending')
+    return next(new ErrorResponse('Can not re-change status', 400));
+
+  // Change status
+  transaction.status = req.body.status;
+  await transaction.save();
+
+  res.status(200).json({
+    success: true,
+    data: transaction,
+  });
+});

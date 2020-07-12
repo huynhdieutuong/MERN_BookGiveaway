@@ -22,14 +22,19 @@ router.get(
   transactionsController.getTransactions
 );
 
+// @route   POST /api/transactions
+// @desc    Create transaction
+// @access  Private
+router.post('/', transactionsController.createTransaction);
+
 // @route   GET /api/transactions/:id
 // @desc    Get transaction
 // @access  Private
 router.get('/:id', transactionsController.getTransaction);
 
-// @route   POST /api/transactions
-// @desc    Create transaction
+// @route   PUT /api/transactions/:id
+// @desc    Change transaction status
 // @access  Private
-router.post('/', transactionsController.createTransaction);
+router.put('/:id', transactionsController.changeStatus);
 
 module.exports = router;

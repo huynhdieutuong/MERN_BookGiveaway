@@ -9,8 +9,9 @@ const TransactionSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'success'],
+    enum: ['pending', 'success', 'fail'],
     default: 'pending',
+    required: true,
   },
   giver: {
     type: Schema.Types.ObjectId,

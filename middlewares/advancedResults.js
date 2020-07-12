@@ -2,7 +2,7 @@ const Category = require('../models/Category');
 const Notification = require('../models/Notification');
 
 module.exports = (route, model, populate) => async (req, res, next) => {
-  let { book, user, cat, key, sort, select, page, limit } = req.query;
+  let { isGave, book, user, cat, key, sort, select, page, limit } = req.query;
   let query;
   let total;
 
@@ -13,7 +13,7 @@ module.exports = (route, model, populate) => async (req, res, next) => {
     querySearch = { book: req.params.bookId };
   }
 
-  // Get all requests (required admin)
+  // Get all requests
   if (route === 'requests' && !req.params.bookId) {
     if (book) querySearch = { book };
     if (user) querySearch = { user };
@@ -36,7 +36,7 @@ module.exports = (route, model, populate) => async (req, res, next) => {
   }
 
   // Get books by keyword & category
-  if (route === 'books' && (key || cat)) {
+  if (route === 'books') {
     let queryKey = {};
     if (key) {
       queryKey = {
@@ -60,7 +60,13 @@ module.exports = (route, model, populate) => async (req, res, next) => {
       queryCat = { $or: arrCats };
     }
 
-    querySearch = { $and: [queryKey, queryCat] };
+    let queryGave = { isGave: false };
+    if (isGave) queryGave = { isGave };
+
+    let queryUser = {};
+    if (user) queryUser = { user };
+
+    querySearch = { $and: [queryUser, queryKey, queryCat, queryGave] };
   }
 
   query = model.find(querySearch);

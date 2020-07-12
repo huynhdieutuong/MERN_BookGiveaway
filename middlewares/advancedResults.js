@@ -35,6 +35,11 @@ module.exports = (route, model, populate) => async (req, res, next) => {
     querySearch = { owner: req.user.id };
   }
 
+  // Get transactions by userId
+  if (route === 'transactions') {
+    querySearch = { $or: [{ giver: req.user.id }, { receiver: req.user.id }] };
+  }
+
   // Get books by keyword & category
   if (route === 'books') {
     let queryKey = {};

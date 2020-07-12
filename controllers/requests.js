@@ -13,6 +13,9 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
 
   if (!book) return next(new ErrorResponse('Book not found', 404));
 
+  if (book.isGave)
+    return next(new ErrorResponse('This book already gave away', 400));
+
   if (book.user.toString() === req.user.id)
     return next(new ErrorResponse('Owner cannot enter giveaway', 400));
 

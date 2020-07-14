@@ -1,4 +1,4 @@
-import { GET_BOOKS } from '../types';
+import { GET_BOOKS, GET_CATEGORIES } from '../types';
 
 export default (state, action) => {
   const { type, payload } = action;
@@ -10,6 +10,11 @@ export default (state, action) => {
         books: payload.data,
         total: payload.total,
         limit: payload.limit,
+      };
+    case GET_CATEGORIES:
+      return {
+        ...state,
+        categories: payload.data,
       };
     default:
       return state;

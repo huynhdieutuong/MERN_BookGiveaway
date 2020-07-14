@@ -7,6 +7,11 @@ const requiredAdmin = require('../middlewares/requiredAdmin');
 
 const passportJWT = passport.authenticate('jwt', { session: false });
 
+// @route   GET  /api/categories
+// @desc    Get categories
+// @access  Public
+router.get('/', categoriesController.getCategories);
+
 // @route   GET  /api/categories/:slug
 // @desc    Get category
 // @access  Public

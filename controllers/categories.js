@@ -2,6 +2,16 @@ const asyncHandler = require('../middlewares/asyncHandler');
 const ErrorResponse = require('../utils/ErrorResponse');
 const Category = require('../models/Category');
 
+exports.getCategories = asyncHandler(async (req, res, next) => {
+  const categories = await Category.find();
+
+  res.status(200).json({
+    success: true,
+    count: categories.length,
+    data: categories,
+  });
+});
+
 exports.createCategory = asyncHandler(async (req, res, next) => {
   const { name, parent } = req.body;
 

@@ -2,18 +2,19 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import BookContext from './bookContext';
 import BookReducer from './bookReducer';
-import { GET_BOOKS } from '../types';
+import { GET_BOOKS, GET_CATEGORIES } from '../types';
 
 const BookState = (props) => {
   const initialState = {
     books: [],
     total: 0,
     limit: 10,
+    categories: [],
   };
 
   const [state, dispatch] = useReducer(BookReducer, initialState);
 
-  const { books, total, limit } = state;
+  const { books, total, limit, categories } = state;
 
   // Get books
   const getBooks = async (query) => {
@@ -34,13 +35,25 @@ const BookState = (props) => {
     });
   };
 
+  // Get categories
+  const getCategories = async () => {
+    const res = await axios.get('/api/categories');
+
+    dispatch({
+      type: GET_CATEGORIES,
+      payload: res.data,
+    });
+  };
+
   return (
     <BookContext.Provider
       value={{
         books,
         total,
         limit,
+        categories,
         getBooks,
+        getCategories,
       }}
     >
       {props.children}

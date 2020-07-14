@@ -7,16 +7,26 @@ import { GET_BOOKS } from '../types';
 const BookState = (props) => {
   const initialState = {
     books: [],
-    pagination: {},
+    total: 0,
+    limit: 10,
   };
 
   const [state, dispatch] = useReducer(BookReducer, initialState);
 
-  const { books, pagination } = state;
+  const { books, total, limit } = state;
 
   // Get books
-  const getBooks = async () => {
-    const res = await axios.get('/api/books');
+  const getBooks = async (query) => {
+    const { key, cat, user, sort, page, limit } = query;
+
+    let queryString = `/api/books?page=${page}`;
+    if (key) queryString = queryString + `&key=${key}`;
+    if (cat) queryString = queryString + `&cat=${cat}`;
+    if (user) queryString = queryString + `&user=${user}`;
+    if (sort) queryString = queryString + `&sort=${sort}`;
+    if (limit) queryString = queryString + `&limit=${limit}`;
+
+    const res = await axios.get(queryString);
 
     dispatch({
       type: GET_BOOKS,
@@ -28,7 +38,8 @@ const BookState = (props) => {
     <BookContext.Provider
       value={{
         books,
-        pagination,
+        total,
+        limit,
         getBooks,
       }}
     >

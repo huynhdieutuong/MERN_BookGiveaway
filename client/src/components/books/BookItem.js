@@ -1,19 +1,16 @@
 import React from 'react';
 import Moment from 'react-moment';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
   Card,
   CardHeader,
   CardMedia,
-  CardActions,
+  CardContent,
   Avatar,
-  IconButton,
+  Typography,
 } from '@material-ui/core';
 
 const BookItem = ({ book }) => {
-  const { title, imageUrls, user, createAt } = book;
+  const { title, author, imageUrls, user, createAt } = book;
   return (
     <Card>
       <CardHeader
@@ -21,22 +18,26 @@ const BookItem = ({ book }) => {
         title={user.name}
         subheader={<Moment fromNow>{createAt}</Moment>}
       />
-      <CardMedia
-        style={{ height: '300px' }}
-        image={imageUrls[0]}
-        title={title}
-      />
-      <CardActions disableSpacing>
-        <IconButton aria-label='add to favorites'>
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label='share'>
-          <ShareIcon />
-        </IconButton>
-        <IconButton aria-label='show more'>
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
+      <CardMedia style={{ height: '300px' }} image={imageUrls[0]} />
+      <CardContent>
+        <Typography
+          gutterBottom
+          variant='h5'
+          component='h2'
+          style={{ fontSize: '14px' }}
+          title={title}
+        >
+          {title.length > 50 ? title.slice(0, 50) + '...' : title}
+        </Typography>
+        <Typography
+          variant='body2'
+          color='textSecondary'
+          component='p'
+          style={{ fontSize: '12px' }}
+        >
+          {author}
+        </Typography>
+      </CardContent>
     </Card>
   );
 };

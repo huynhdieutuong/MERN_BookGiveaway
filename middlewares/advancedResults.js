@@ -112,6 +112,7 @@ module.exports = (route, model, populate) => async (req, res, next) => {
     success: true,
     count: results.length,
     total,
+    limit,
     pagination,
     data: results,
   };

@@ -8,7 +8,8 @@ export default (state, action) => {
       return {
         ...state,
         books: payload.data,
-        pagination: payload.pagination,
+        total: payload.total,
+        limit: payload.limit,
       };
     default:
       return state;

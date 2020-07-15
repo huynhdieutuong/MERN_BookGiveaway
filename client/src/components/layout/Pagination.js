@@ -25,7 +25,12 @@ const BasicPagination = () => {
 
   return (
     <div className={classes.root}>
-      <Pagination count={totalPages} onChange={handleChange} color='primary' />
+      <Pagination
+        count={totalPages}
+        page={filters.page}
+        onChange={handleChange}
+        color='primary'
+      />
     </div>
   );
 };

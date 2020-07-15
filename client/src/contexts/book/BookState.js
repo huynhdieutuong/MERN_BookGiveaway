@@ -2,23 +2,39 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import BookContext from './bookContext';
 import BookReducer from './bookReducer';
-import { GET_BOOKS, GET_CATEGORIES } from '../types';
+import { GET_BOOKS, GET_CATEGORIES, SET_FILTERS } from '../types';
 
 const BookState = (props) => {
   const initialState = {
+    loading: true,
     books: [],
-    total: 0,
-    limit: 10,
+    totalPages: 0,
     categories: [],
+    filters: {
+      page: 1,
+      limit: 20,
+      cat: null,
+      key: null,
+      user: null,
+      sort: null,
+    },
   };
 
   const [state, dispatch] = useReducer(BookReducer, initialState);
 
-  const { books, total, limit, categories } = state;
+  const { loading, books, totalPages, categories, filters } = state;
+
+  // Set filters
+  const setFilters = (filters) => {
+    dispatch({
+      type: SET_FILTERS,
+      payload: filters,
+    });
+  };
 
   // Get books
-  const getBooks = async (query) => {
-    const { key, cat, user, sort, page, limit } = query;
+  const getBooks = async () => {
+    const { key, cat, user, sort, page, limit } = filters;
 
     let queryString = `/api/books?page=${page}`;
     if (key) queryString = queryString + `&key=${key}`;
@@ -48,12 +64,14 @@ const BookState = (props) => {
   return (
     <BookContext.Provider
       value={{
+        loading,
         books,
-        total,
-        limit,
+        totalPages,
+        filters,
         categories,
         getBooks,
         getCategories,
+        setFilters,
       }}
     >
       {props.children}

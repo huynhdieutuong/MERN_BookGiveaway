@@ -5,18 +5,19 @@ import BookContext from '../../contexts/book/bookContext';
 import BookItem from './BookItem';
 import Spinner from '../layout/Spinner';
 import Pagination from '../layout/Pagination';
+import NoItems from '../layout/NoItems';
 
 const Books = () => {
-  const { books, total, limit, getBooks } = useContext(BookContext);
+  const { loading, books, getBooks, filters } = useContext(BookContext);
 
   useEffect(() => {
-    getBooks({ page: 1, limit: 20 });
+    getBooks();
     // eslint-disable-next-line
-  }, []);
+  }, [filters]);
 
-  if (books.length === 0) return <Spinner />;
+  if (loading) return <Spinner />;
 
-  return (
+  return books.length > 0 ? (
     <Fragment>
       <Grid container spacing={3}>
         {books.map((book) => (
@@ -26,9 +27,11 @@ const Books = () => {
         ))}
       </Grid>
       <Grid container style={{ justifyContent: 'flex-end' }}>
-        <Pagination total={total} limit={limit} />
+        <Pagination />
       </Grid>
     </Fragment>
+  ) : (
+    <NoItems />
   );
 };
 

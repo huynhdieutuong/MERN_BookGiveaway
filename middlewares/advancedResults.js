@@ -98,6 +98,7 @@ module.exports = (route, model, populate) => async (req, res, next) => {
   // Pagination
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 10;
+  const totalPages = Math.ceil(total / limit);
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   query = query.skip(startIndex).limit(limit);
@@ -111,8 +112,7 @@ module.exports = (route, model, populate) => async (req, res, next) => {
   res.advancedResults = {
     success: true,
     count: results.length,
-    total,
-    limit,
+    totalPages,
     pagination,
     data: results,
   };

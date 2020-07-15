@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 
@@ -12,26 +12,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BasicPagination = ({ total, limit }) => {
-  const { getBooks } = useContext(BookContext);
-
-  const count = Math.ceil(total / limit);
+const BasicPagination = () => {
+  const { totalPages, filters, setFilters } = useContext(BookContext);
   const classes = useStyles();
-  const [page, setPage] = useState(1);
 
   const handleChange = (event, value) => {
-    setPage(value);
-    getBooks({ page: value, limit });
+    setFilters({
+      ...filters,
+      page: value,
+    });
   };
 
   return (
     <div className={classes.root}>
-      <Pagination
-        count={count}
-        page={page}
-        onChange={handleChange}
-        color='primary'
-      />
+      <Pagination count={totalPages} onChange={handleChange} color='primary' />
     </div>
   );
 };

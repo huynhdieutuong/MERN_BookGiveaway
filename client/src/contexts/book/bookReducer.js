@@ -1,15 +1,20 @@
-import { GET_BOOKS, GET_CATEGORIES } from '../types';
+import { GET_BOOKS, GET_CATEGORIES, SET_FILTERS } from '../types';
 
 export default (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case SET_FILTERS:
+      return {
+        ...state,
+        filters: payload,
+      };
     case GET_BOOKS:
       return {
         ...state,
+        loading: false,
         books: payload.data,
-        total: payload.total,
-        limit: payload.limit,
+        totalPages: payload.totalPages,
       };
     case GET_CATEGORIES:
       return {

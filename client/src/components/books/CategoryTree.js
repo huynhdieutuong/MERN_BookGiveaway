@@ -10,14 +10,16 @@ import Spinner from '../layout/Spinner';
 
 const useStyles = makeStyles({
   root: {
-    height: 800,
+    height: 1200,
     flexGrow: 1,
     maxWidth: 400,
   },
 });
 
 const CategoryTree = () => {
-  const { categories, getCategories } = useContext(BookContext);
+  const { categories, getCategories, setFilters, filters } = useContext(
+    BookContext
+  );
   const classes = useStyles();
 
   useEffect(() => {
@@ -27,6 +29,14 @@ const CategoryTree = () => {
 
   if (categories.length === 0) return <Spinner />;
 
+  const handleClick = (id) => {
+    setFilters({
+      ...filters,
+      cat: id,
+      page: 1,
+    });
+  };
+
   const buildTree = (parent) => {
     let results = [];
 
@@ -34,7 +44,12 @@ const CategoryTree = () => {
 
     filtered.forEach((cat) => {
       results.push(
-        <TreeItem key={cat._id} nodeId={cat._id} label={cat.name}>
+        <TreeItem
+          key={cat._id}
+          nodeId={cat._id}
+          label={cat.name}
+          onClick={() => handleClick(cat._id)}
+        >
           {buildTree(cat._id)}
         </TreeItem>
       );

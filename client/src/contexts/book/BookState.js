@@ -16,7 +16,7 @@ const BookState = (props) => {
       cat: null,
       key: null,
       user: null,
-      sort: null,
+      sort: '-createAt',
     },
   };
 

@@ -8,15 +8,17 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 
 import Home from './pages/Home';
+import Book from './pages/Book';
 
 const App = () => {
   return (
     <BookState>
       <Router>
         <Navbar />
-        <Container fixed style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <Container fixed style={{ marginTop: '40px', marginBottom: '40px' }}>
           <Switch>
-            <Route path='/' component={Home} />
+            <Route exact path='/' component={Home} />
+            <Route exact path='/books/:slug' component={Book} />
           </Switch>
         </Container>
         <Footer />

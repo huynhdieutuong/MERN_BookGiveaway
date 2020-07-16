@@ -1,9 +1,21 @@
-import { GET_BOOKS, GET_CATEGORIES, SET_FILTERS } from '../types';
+import {
+  SET_LOADING,
+  GET_BOOKS,
+  GET_CATEGORIES,
+  SET_FILTERS,
+  GET_BOOK,
+  ERROR_BOOK,
+} from '../types';
 
 export default (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
     case SET_FILTERS:
       return {
         ...state,
@@ -20,6 +32,18 @@ export default (state, action) => {
       return {
         ...state,
         categories: payload.data,
+      };
+    case GET_BOOK:
+      return {
+        ...state,
+        book: payload.data,
+        loading: false,
+      };
+    case ERROR_BOOK:
+      return {
+        ...state,
+        error: payload.error,
+        loading: false,
       };
     default:
       return state;

@@ -2,7 +2,14 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import BookContext from './bookContext';
 import BookReducer from './bookReducer';
-import { GET_BOOKS, GET_CATEGORIES, SET_FILTERS } from '../types';
+import {
+  SET_LOADING,
+  GET_BOOKS,
+  GET_CATEGORIES,
+  SET_FILTERS,
+  GET_BOOK,
+  ERROR_BOOK,
+} from '../types';
 
 const BookState = (props) => {
   const initialState = {
@@ -18,11 +25,24 @@ const BookState = (props) => {
       user: null,
       sort: '-createAt',
     },
+    book: null,
+    error: null,
   };
 
   const [state, dispatch] = useReducer(BookReducer, initialState);
 
-  const { loading, books, totalPages, categories, filters } = state;
+  const {
+    loading,
+    books,
+    totalPages,
+    categories,
+    filters,
+    book,
+    error,
+  } = state;
+
+  // Set loading
+  const setLoading = () => dispatch({ type: SET_LOADING });
 
   // Set filters
   const setFilters = (filters) => {
@@ -34,6 +54,8 @@ const BookState = (props) => {
 
   // Get books
   const getBooks = async () => {
+    setLoading();
+
     const { key, cat, user, sort, page, limit } = filters;
 
     let queryString = `/api/books?page=${page}`;
@@ -61,6 +83,25 @@ const BookState = (props) => {
     });
   };
 
+  // Get book
+  const getBook = async (id) => {
+    setLoading();
+
+    try {
+      const res = await axios.get(`/api/books/${id}`);
+
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -69,9 +110,12 @@ const BookState = (props) => {
         totalPages,
         filters,
         categories,
+        book,
+        error,
         getBooks,
         getCategories,
         setFilters,
+        getBook,
       }}
     >
       {props.children}

@@ -17,31 +17,31 @@ const Books = () => {
     // eslint-disable-next-line
   }, [filters]);
 
-  if (loading) return <Spinner />;
-
-  return books.length > 0 ? (
+  return (
     <Fragment>
       <Grid container style={{ marginBottom: '20px' }}>
-        <Grid item xs={12} sm={9} lg={10}>
+        <div style={{ flexGrow: 1 }}>
           <SortBy />
-        </Grid>
-        <Grid item xs={false} sm={3} lg={2}>
-          <BooksPerPage />
-        </Grid>
+        </div>
+        <BooksPerPage />
       </Grid>
       <Grid container spacing={3}>
-        {books.map((book) => (
-          <Grid key={book._id} item xs={12} sm={6} md={4} lg={3}>
-            <BookItem book={book} />
-          </Grid>
-        ))}
+        {loading ? (
+          <Spinner />
+        ) : books.length > 0 ? (
+          books.map((book) => (
+            <Grid key={book._id} item xs={12} sm={6} md={4} lg={3}>
+              <BookItem book={book} />
+            </Grid>
+          ))
+        ) : (
+          <NoItems />
+        )}
       </Grid>
       <Grid container style={{ justifyContent: 'flex-end' }}>
         <Pagination />
       </Grid>
     </Fragment>
-  ) : (
-    <NoItems />
   );
 };
 

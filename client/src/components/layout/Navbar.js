@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -113,11 +114,11 @@ const Navbar = () => {
               <img src={Logo} alt='logo' className={classes.logo} />
             </a>
           </IconButton>
-          <a href='/' className={classes.title}>
+          <Link to='/' className={classes.title}>
             <Typography variant='h6' noWrap>
               Book-Giveaway
             </Typography>
-          </a>
+          </Link>
 
           {/* Search Book */}
           <SearchBook />

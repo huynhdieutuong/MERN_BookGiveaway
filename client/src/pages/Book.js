@@ -3,6 +3,9 @@ import { Grid } from '@material-ui/core';
 
 import Spinner from '../components/layout/Spinner';
 import BookContext from '../contexts/book/bookContext';
+import ImagesSlide from '../components/book/ImagesSlide';
+import BookInfo from '../components/book/BookInfo';
+import Participants from '../components/book/Participants';
 
 const Book = ({ match }) => {
   const { loading, book, error, getBook } = useContext(BookContext);
@@ -21,13 +24,13 @@ const Book = ({ match }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={12} md={4}>
-        <h3>IMAGES</h3>
+        <ImagesSlide />
       </Grid>
       <Grid item xs={12} sm={12} md={5}>
-        <h3>INFO</h3>
+        <BookInfo />
       </Grid>
       <Grid item xs={12} sm={12} md={3}>
-        <h3>REQUESTS</h3>
+        <Participants />
       </Grid>
     </Grid>
   );

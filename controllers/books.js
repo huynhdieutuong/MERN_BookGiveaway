@@ -5,6 +5,7 @@ const form = formidable({ multiples: true });
 const asyncHandler = require('../middlewares/asyncHandler');
 const ErrorResponse = require('../utils/ErrorResponse');
 const Book = require('../models/Book');
+const Request = require('../models/Request');
 
 exports.getBooks = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
@@ -22,14 +23,21 @@ exports.getBook = asyncHandler(async (req, res, next) => {
     })
     .populate({
       path: 'user',
-      select: 'name username',
+      select: 'name username avatarUrl',
     });
 
   if (!book) return next(new ErrorResponse('Book not found', 404));
 
+  // Get all request of book
+  const requests = await Request.find({ book: book._id }).populate({
+    path: 'user',
+    select: 'name username avatarUrl',
+  });
+
   res.status(200).json({
     success: true,
     data: book,
+    requests,
   });
 });
 

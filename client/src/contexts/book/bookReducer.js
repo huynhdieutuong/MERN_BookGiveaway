@@ -37,6 +37,7 @@ export default (state, action) => {
       return {
         ...state,
         book: payload.data,
+        requests: payload.requests,
         loading: false,
       };
     case ERROR_BOOK:

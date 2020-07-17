@@ -26,6 +26,7 @@ const BookState = (props) => {
       sort: '-createAt',
     },
     book: null,
+    requests: [],
     error: null,
   };
 
@@ -38,6 +39,7 @@ const BookState = (props) => {
     categories,
     filters,
     book,
+    requests,
     error,
   } = state;
 
@@ -111,6 +113,7 @@ const BookState = (props) => {
         filters,
         categories,
         book,
+        requests,
         error,
         getBooks,
         getCategories,

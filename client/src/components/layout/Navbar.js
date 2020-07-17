@@ -5,6 +5,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import MenuIcon from '@material-ui/icons/Menu';
 import {
   AppBar,
   Toolbar,
@@ -13,15 +14,17 @@ import {
   Badge,
   MenuItem,
   Menu,
+  Hidden,
 } from '@material-ui/core';
 
 import SearchBook from '../books/SearchBook';
-import Logo from '../../images/logo.png';
+import Drawer from './Drawer';
 
 const Navbar = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [isOpen, toggleDrawer] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -110,13 +113,14 @@ const Navbar = () => {
             color='inherit'
             aria-label='open drawer'
           >
-            <a href='/'>
-              <img src={Logo} alt='logo' className={classes.logo} />
-            </a>
+            <MenuIcon onClick={() => toggleDrawer(true)} />
+            <Hidden mdUp>
+              <Drawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
+            </Hidden>
           </IconButton>
           <Link to='/' className={classes.title}>
             <Typography variant='h6' noWrap>
-              Book-Giveaway
+              Book Giveaway
             </Typography>
           </Link>
 
@@ -169,11 +173,8 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  logo: {
-    width: 50,
-  },
   menuButton: {
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(2),
   },
   title: {
     display: 'none',

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, Fragment } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Hidden } from '@material-ui/core';
 
 import BookContext from '../../contexts/book/bookContext';
 import BookItem from './BookItem';
@@ -23,7 +23,9 @@ const Books = () => {
         <div style={{ flexGrow: 1 }}>
           <SortBy />
         </div>
-        <BooksPerPage />
+        <Hidden only='xs'>
+          <BooksPerPage />
+        </Hidden>
       </Grid>
       <Grid container spacing={3}>
         {loading ? (

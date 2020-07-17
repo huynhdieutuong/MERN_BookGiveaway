@@ -18,7 +18,7 @@ const App = () => {
         <Container fixed style={{ marginTop: '40px', marginBottom: '40px' }}>
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route exact path='/books/:slug' component={Book} />
+            <Route exact path='/:slug' component={Book} />
           </Switch>
         </Container>
         <Footer />

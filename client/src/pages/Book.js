@@ -16,10 +16,7 @@ const Book = ({ match }) => {
     // eslint-disable-next-line
   }, []);
 
-  if (loading) return <Spinner />;
-
-  console.log(book);
-  console.log(error);
+  if (loading || !book) return <Spinner />;
 
   return (
     <Grid container spacing={2}>

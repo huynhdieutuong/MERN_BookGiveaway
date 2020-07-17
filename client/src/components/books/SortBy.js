@@ -11,7 +11,8 @@ import BookContext from '../../contexts/book/bookContext';
 
 const useStyles = makeStyles({
   root: {
-    width: 400,
+    minWidth: 200,
+    maxWidth: 400,
     backgroundColor: '#f2f2f2',
   },
 });

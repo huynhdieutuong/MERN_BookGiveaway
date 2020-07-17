@@ -20,7 +20,7 @@ const BookItem = ({ book }) => {
         subheader={<Moment fromNow>{createAt}</Moment>}
       />
       <Link
-        to={`/books/${slug}`}
+        to={`/${slug}`}
         style={{ color: 'rgba(0, 0, 0, 0.87)', textDecoration: 'none' }}
       >
         <CardMedia style={{ height: '300px' }} image={imageUrls[0]} />

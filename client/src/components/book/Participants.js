@@ -10,7 +10,7 @@ const Participants = () => {
   return (
     <Fragment>
       <Typography component='h5' variant='h5'>
-        PARTICIPANTS
+        Participants
       </Typography>
       {requests.map((request) => (
         <ParticipantItem key={request._id} request={request} />

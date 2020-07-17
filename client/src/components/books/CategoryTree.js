@@ -1,18 +1,17 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { Typography } from '@material-ui/core';
 
 import BookContext from '../../contexts/book/bookContext';
 import Spinner from '../layout/Spinner';
 
 const useStyles = makeStyles({
   root: {
-    height: 1200,
     flexGrow: 1,
-    maxWidth: 400,
   },
 });
 
@@ -59,13 +58,16 @@ const CategoryTree = () => {
   };
 
   return (
-    <TreeView
-      className={classes.root}
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpandIcon={<ChevronRightIcon />}
-    >
-      {buildTree(null)}
-    </TreeView>
+    <Fragment>
+      <Typography variant='h6'>Categories</Typography>
+      <TreeView
+        className={classes.root}
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+      >
+        {buildTree(null)}
+      </TreeView>
+    </Fragment>
   );
 };
 

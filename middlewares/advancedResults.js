@@ -1,5 +1,6 @@
 const Category = require('../models/Category');
 const Notification = require('../models/Notification');
+const ErrorResponse = require('../utils/ErrorResponse');
 
 module.exports = (route, model, populate) => async (req, res, next) => {
   let { isGave, book, user, cat, key, sort, select, page, limit } = req.query;
@@ -55,14 +56,18 @@ module.exports = (route, model, populate) => async (req, res, next) => {
     let queryCat = {};
     if (cat) {
       // Get descendants
-      const categories = await Category.find({ ancestors: cat });
-      const arrCats = [{ category: cat }];
+      try {
+        const categories = await Category.find({ ancestors: cat });
+        const arrCats = [{ category: cat }];
 
-      categories.forEach((ca) => {
-        arrCats.push({ category: ca.id });
-      });
+        categories.forEach((ca) => {
+          arrCats.push({ category: ca.id });
+        });
 
-      queryCat = { $or: arrCats };
+        queryCat = { $or: arrCats };
+      } catch (error) {
+        next(error);
+      }
     }
 
     let queryGave = { isGave: false };

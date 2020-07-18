@@ -1,6 +1,5 @@
 import React from 'react';
-import { Drawer, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Drawer, Typography, Link } from '@material-ui/core';
 
 import CategoryTree from '../books/CategoryTree';
 
@@ -9,7 +8,7 @@ const TemporaryDrawer = ({ isOpen, toggleDrawer }) => {
     <Drawer anchor='left' open={isOpen} onClose={() => toggleDrawer(false)}>
       <div style={{ width: 250, padding: 10 }}>
         <Link
-          to='/'
+          href='/'
           style={{
             backgroundColor: '#3f51b5',
             color: 'white',

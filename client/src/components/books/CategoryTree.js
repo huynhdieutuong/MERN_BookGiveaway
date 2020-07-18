@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
@@ -13,13 +14,22 @@ const useStyles = makeStyles({
   root: {
     flexGrow: 1,
   },
+  name: {
+    color: 'rgba(0, 0, 0, 0.87)',
+    textDecoration: 'none',
+  },
 });
 
 const CategoryTree = () => {
-  const { categories, getCategories, setFilters, filters } = useContext(
-    BookContext
-  );
   const classes = useStyles();
+
+  const {
+    categories,
+    getCategories,
+    setFilters,
+    filters,
+    category,
+  } = useContext(BookContext);
 
   useEffect(() => {
     getCategories();
@@ -43,14 +53,19 @@ const CategoryTree = () => {
 
     filtered.forEach((cat) => {
       results.push(
-        <TreeItem
+        <Link
+          to={`/${cat.slug}/${cat._id}`}
           key={cat._id}
-          nodeId={cat._id}
-          label={cat.name}
-          onClick={() => handleClick(cat._id)}
+          className={classes.name}
         >
-          {buildTree(cat._id)}
-        </TreeItem>
+          <TreeItem
+            nodeId={cat._id}
+            label={cat.name}
+            onClick={() => handleClick(cat._id)}
+          >
+            {buildTree(cat._id)}
+          </TreeItem>
+        </Link>
       );
     });
 
@@ -61,6 +76,11 @@ const CategoryTree = () => {
     <Fragment>
       <Typography variant='h6'>Categories</Typography>
       <TreeView
+        defaultSelected={category._id}
+        defaultExpanded={
+          category.ancestors &&
+          category.ancestors.map((ancestor) => ancestor._id)
+        }
         className={classes.root}
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}

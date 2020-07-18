@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -15,6 +14,7 @@ import {
   MenuItem,
   Menu,
   Hidden,
+  Link,
 } from '@material-ui/core';
 
 import SearchBook from '../books/SearchBook';
@@ -22,6 +22,7 @@ import Drawer from './Drawer';
 
 const Navbar = () => {
   const classes = useStyles();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [isOpen, toggleDrawer] = useState(false);
@@ -118,10 +119,12 @@ const Navbar = () => {
               <Drawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
             </Hidden>
           </IconButton>
-          <Link to='/' className={classes.title}>
-            <Typography variant='h6' noWrap>
-              Book Giveaway
-            </Typography>
+          <Link
+            href='/'
+            className={classes.title}
+            style={{ textDecoration: 'none' }}
+          >
+            <Typography variant='h6'>Book Giveaway</Typography>
           </Link>
 
           {/* Search Book */}
@@ -182,7 +185,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
     },
     color: 'white',
-    textDecoration: 'none',
   },
   sectionDesktop: {
     display: 'none',

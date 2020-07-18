@@ -20,6 +20,7 @@ const App = () => {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/:slug' component={Book} />
+            <Route exact path='/:slug/:id' component={Home} />
             <Route component={NotFound} />
           </Switch>
         </Container>

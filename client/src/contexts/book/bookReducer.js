@@ -5,6 +5,7 @@ import {
   SET_FILTERS,
   GET_BOOK,
   ERROR_BOOK,
+  GET_CATEGORY,
 } from '../types';
 
 export default (state, action) => {
@@ -41,6 +42,11 @@ export default (state, action) => {
         book: payload.data,
         requests: payload.requests,
         loading: false,
+      };
+    case GET_CATEGORY:
+      return {
+        ...state,
+        category: payload.data,
       };
     case ERROR_BOOK:
       return {

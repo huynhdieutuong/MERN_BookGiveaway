@@ -9,6 +9,7 @@ import {
   SET_FILTERS,
   GET_BOOK,
   ERROR_BOOK,
+  GET_CATEGORY,
 } from '../types';
 
 const BookState = (props) => {
@@ -22,12 +23,12 @@ const BookState = (props) => {
       limit: 20,
       cat: null,
       key: null,
-      user: null,
       sort: '-createAt',
     },
     book: null,
     requests: [],
     error: null,
+    category: {},
   };
 
   const [state, dispatch] = useReducer(BookReducer, initialState);
@@ -41,6 +42,7 @@ const BookState = (props) => {
     book,
     requests,
     error,
+    category,
   } = state;
 
   // Set loading
@@ -55,24 +57,31 @@ const BookState = (props) => {
   };
 
   // Get books
-  const getBooks = async () => {
+  const getBooks = async (catId) => {
     setLoading();
 
-    const { key, cat, user, sort, page, limit } = filters;
+    const { key, sort, page, limit } = filters;
 
     let queryString = `/api/books?page=${page}`;
     if (key) queryString = queryString + `&key=${key}`;
-    if (cat) queryString = queryString + `&cat=${cat}`;
-    if (user) queryString = queryString + `&user=${user}`;
+    // if (cat) queryString = queryString + `&cat=${cat}`;
+    if (catId) queryString = queryString + `&cat=${catId}`;
     if (sort) queryString = queryString + `&sort=${sort}`;
     if (limit) queryString = queryString + `&limit=${limit}`;
 
-    const res = await axios.get(queryString);
+    try {
+      const res = await axios.get(queryString);
 
-    dispatch({
-      type: GET_BOOKS,
-      payload: res.data,
-    });
+      dispatch({
+        type: GET_BOOKS,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
   };
 
   // Get categories
@@ -104,6 +113,24 @@ const BookState = (props) => {
     }
   };
 
+  // Get category
+  const getCategory = async (slug) => {
+    try {
+      const res = await axios.get(`/api/categories/${slug}`);
+
+      dispatch({
+        type: GET_CATEGORY,
+        payload: res.data,
+      });
+      return res.data.data._id;
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -115,10 +142,12 @@ const BookState = (props) => {
         book,
         requests,
         error,
+        category,
         getBooks,
         getCategories,
         setFilters,
         getBook,
+        getCategory,
       }}
     >
       {props.children}

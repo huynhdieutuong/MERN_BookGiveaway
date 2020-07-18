@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Grid, Hidden } from '@material-ui/core';
 
+import BookContext from '../contexts/book/bookContext';
 import Books from '../components/books/Books';
 import CategoryTree from '../components/books/CategoryTree';
+import NotFound from '../components/layout/NotFound';
 
-const Home = () => {
+const Home = ({ match }) => {
+  const { slug, id } = match.params;
+  const { filters, getBooks, getCategory, error } = useContext(BookContext);
+
+  useEffect(() => {
+    if (slug) {
+      getCategory(slug);
+      getBooks(id);
+    } else {
+      getBooks();
+    }
+  }, [filters]);
+
+  if (error) return <NotFound />;
+
   return (
     <Grid container spacing={2}>
       <Hidden smDown>

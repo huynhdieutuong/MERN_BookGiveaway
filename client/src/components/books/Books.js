@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, Fragment } from 'react';
+import React, { useContext, Fragment } from 'react';
 import { Grid, Hidden } from '@material-ui/core';
 
 import BookContext from '../../contexts/book/bookContext';
@@ -10,12 +10,7 @@ import Pagination from '../layout/Pagination';
 import NoItems from '../layout/NoItems';
 
 const Books = () => {
-  const { loading, books, getBooks, filters } = useContext(BookContext);
-
-  useEffect(() => {
-    getBooks();
-    // eslint-disable-next-line
-  }, [filters]);
+  const { loading, books } = useContext(BookContext);
 
   return (
     <Fragment>

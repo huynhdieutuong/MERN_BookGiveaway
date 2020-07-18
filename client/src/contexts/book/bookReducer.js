@@ -15,6 +15,8 @@ export default (state, action) => {
       return {
         ...state,
         loading: true,
+        book: null,
+        error: null,
       };
     case SET_FILTERS:
       return {
@@ -45,6 +47,8 @@ export default (state, action) => {
         ...state,
         error: payload.error,
         loading: false,
+        book: {},
+        requests: [],
       };
     default:
       return state;

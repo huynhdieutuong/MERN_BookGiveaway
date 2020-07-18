@@ -9,6 +9,7 @@ import Footer from './components/layout/Footer';
 
 import Home from './pages/Home';
 import Book from './pages/Book';
+import NotFound from './components/layout/NotFound';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/:slug' component={Book} />
+            <Route component={NotFound} />
           </Switch>
         </Container>
         <Footer />

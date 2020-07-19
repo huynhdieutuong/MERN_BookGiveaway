@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -14,7 +15,8 @@ import {
   MenuItem,
   Menu,
   Hidden,
-  Link,
+  Link as NormalLink,
+  Button,
 } from '@material-ui/core';
 
 import SearchBook from '../books/SearchBook';
@@ -119,19 +121,29 @@ const Navbar = () => {
               <Drawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
             </Hidden>
           </IconButton>
-          <Link
+          <NormalLink
             href='/'
             className={classes.title}
             style={{ textDecoration: 'none' }}
           >
             <Typography variant='h6'>Book Giveaway</Typography>
-          </Link>
+          </NormalLink>
 
           {/* Search Book */}
           <SearchBook />
 
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
+
+          <Button color='inherit'>
+            <Link
+              to='/sign-in'
+              style={{ textDecoration: 'none', color: 'white' }}
+            >
+              Sign In
+            </Link>
+          </Button>
+
+          {/* <div className={classes.sectionDesktop}>
             <IconButton aria-label='show 4 new mails' color='inherit'>
               <Badge badgeContent={4} color='secondary'>
                 <MailIcon />
@@ -163,7 +175,7 @@ const Navbar = () => {
             >
               <MoreIcon />
             </IconButton>
-          </div>
+          </div> */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

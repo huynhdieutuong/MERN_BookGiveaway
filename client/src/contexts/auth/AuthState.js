@@ -4,37 +4,48 @@ import axios from 'axios';
 import AuthContext from './authContext';
 import AuthReducer from './authReducer';
 
-import { SIGNIN_SUCCESS, SIGNIN_FAIL } from '../types';
+import { SIGNIN_SUCCESS, SIGNUP_SUCCESS, AUTH_FAIL } from '../types';
 
 const AuthState = (props) => {
   const initialState = {
     user: null,
     error: null,
+    message: null,
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  const { user, error } = state;
+  const { user, error, message } = state;
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 
   // Sign in
-  const signIn = async ({ email, password }) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
+  const signIn = async (formData) => {
     try {
-      const res = await axios.post(
-        '/api/auth/login',
-        { email, password },
-        config
-      );
+      await axios.post('/api/auth/login', formData, config);
 
       dispatch({ type: SIGNIN_SUCCESS });
     } catch (error) {
       dispatch({
-        type: SIGNIN_FAIL,
+        type: AUTH_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
+  // Sign up
+  const signUp = async (formData) => {
+    try {
+      const res = await axios.post('/api/auth/register', formData, config);
+
+      dispatch({ type: SIGNUP_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: AUTH_FAIL,
         payload: error.response.data,
       });
     }
@@ -45,7 +56,9 @@ const AuthState = (props) => {
       value={{
         user,
         error,
+        message,
         signIn,
+        signUp,
       }}
     >
       {props.children}

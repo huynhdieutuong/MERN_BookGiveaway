@@ -1,4 +1,4 @@
-import { SIGNIN_SUCCESS, SIGNIN_FAIL } from '../types';
+import { SIGNIN_SUCCESS, SIGNUP_SUCCESS, AUTH_FAIL } from '../types';
 
 export default (state, action) => {
   const { type, payload } = action;
@@ -9,7 +9,13 @@ export default (state, action) => {
         ...state,
         error: null,
       };
-    case SIGNIN_FAIL:
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        error: null,
+        message: payload.message,
+      };
+    case AUTH_FAIL:
       return {
         ...state,
         error: payload.error,

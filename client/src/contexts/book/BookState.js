@@ -122,7 +122,6 @@ const BookState = (props) => {
         type: GET_CATEGORY,
         payload: res.data,
       });
-      return res.data.data._id;
     } catch (error) {
       dispatch({
         type: ERROR_BOOK,

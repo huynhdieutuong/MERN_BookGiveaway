@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -11,12 +11,17 @@ import {
   Container,
   Grid,
   Typography,
+  CircularProgress,
 } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 import FormikField from '../components/formik-fields/FormikField';
+import AuthContext from '../contexts/auth/authContext';
 
 const SignUp = () => {
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
+  const { error, message, signUp } = useContext(AuthContext);
 
   const initialValues = {
     firstName: '',
@@ -27,8 +32,19 @@ const SignUp = () => {
     passwordConfirm: '',
   };
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    const { firstName, lastName, username, email, password } = values;
+
+    if (!loading) {
+      setLoading(true);
+      await signUp({
+        name: `${firstName} ${lastName}`,
+        username,
+        email,
+        password,
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,86 +57,106 @@ const SignUp = () => {
         <Typography component='h2' variant='h5'>
           Sign up
         </Typography>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={onSubmit}
-          validationSchema={validationSchema}
-        >
-          {({ dirty, isValid, errors, touched }) => {
-            return (
-              <Form className={classes.form}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <FormikField
-                      name='firstName'
-                      label='First Name'
-                      required
-                      errors={errors}
-                      touched={touched}
-                    />
+        {error && (
+          <Alert severity='error' style={{ width: '100%', margin: '10px 0' }}>
+            {error}
+          </Alert>
+        )}
+        {message ? (
+          <Alert severity='success' style={{ width: '100%', margin: '10px 0' }}>
+            <AlertTitle>SignUp Success</AlertTitle>
+            {message}
+          </Alert>
+        ) : (
+          <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
+          >
+            {({ dirty, isValid, errors, touched }) => {
+              return (
+                <Form className={classes.form}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <FormikField
+                        name='firstName'
+                        label='First Name'
+                        required
+                        errors={errors}
+                        touched={touched}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <FormikField
+                        name='lastName'
+                        label='Last Name'
+                        required
+                        errors={errors}
+                        touched={touched}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormikField
+                        name='email'
+                        label='Email'
+                        required
+                        errors={errors}
+                        touched={touched}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormikField
+                        name='username'
+                        label='User name'
+                        required
+                        errors={errors}
+                        touched={touched}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormikField
+                        name='password'
+                        type='password'
+                        label='Password'
+                        required
+                        errors={errors}
+                        touched={touched}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormikField
+                        name='passwordConfirm'
+                        type='password'
+                        label='Confirm Password'
+                        required
+                        errors={errors}
+                        touched={touched}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <FormikField
-                      name='lastName'
-                      label='Last Name'
-                      required
-                      errors={errors}
-                      touched={touched}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormikField
-                      name='email'
-                      label='Email'
-                      required
-                      errors={errors}
-                      touched={touched}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormikField
-                      name='username'
-                      label='User name'
-                      required
-                      errors={errors}
-                      touched={touched}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormikField
-                      name='password'
-                      type='password'
-                      label='Password'
-                      required
-                      errors={errors}
-                      touched={touched}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormikField
-                      name='passwordConfirm'
-                      type='password'
-                      label='Confirm Password'
-                      required
-                      errors={errors}
-                      touched={touched}
-                    />
-                  </Grid>
-                </Grid>
-                <Button
-                  type='submit'
-                  fullWidth
-                  variant='contained'
-                  color='primary'
-                  className={classes.submit}
-                  disabled={!dirty || !isValid}
-                >
-                  Sign Up
-                </Button>
-              </Form>
-            );
-          }}
-        </Formik>
+                  <div className={classes.wrapper}>
+                    <Button
+                      type='submit'
+                      fullWidth
+                      variant='contained'
+                      color='primary'
+                      className={classes.submit}
+                      disabled={!dirty || !isValid || loading}
+                    >
+                      Sign In
+                    </Button>
+                    {loading && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
+        )}
 
         <Grid container justify='flex-end'>
           <Grid item>
@@ -176,6 +212,17 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 }));
 

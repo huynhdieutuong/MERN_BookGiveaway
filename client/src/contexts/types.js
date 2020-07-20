@@ -7,3 +7,7 @@ export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_BOOK = 'GET_BOOK';
 export const ERROR_BOOK = 'ERROR_BOOK';
 export const GET_CATEGORY = 'GET_CATEGORY';
+
+// Auth
+export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
+export const SIGNIN_FAIL = 'SIGNIN_FAIL';

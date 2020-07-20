@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -11,22 +11,33 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
+  CircularProgress,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import FormikField from '../components/formik-fields/FormikField';
+import AuthContext from '../contexts/auth/authContext';
 
 const SignIn = () => {
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
+  const { error, signIn } = useContext(AuthContext);
 
   const initialValues = {
     email: '',
     password: '',
   };
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    const { email, password } = values;
+
+    if (!loading) {
+      setLoading(true);
+      await signIn({ email, password });
+      setLoading(false);
+    }
   };
 
   return (
@@ -39,6 +50,11 @@ const SignIn = () => {
         <Typography component='h2' variant='h5'>
           Sign in
         </Typography>
+        {error && (
+          <Alert severity='error' style={{ width: '100%', margin: '10px 0' }}>
+            {error}
+          </Alert>
+        )}
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
@@ -72,16 +88,24 @@ const SignIn = () => {
                   control={<Checkbox value='remember' color='primary' />}
                   label='Remember me'
                 />
-                <Button
-                  type='submit'
-                  fullWidth
-                  variant='contained'
-                  color='primary'
-                  className={classes.submit}
-                  disabled={!dirty || !isValid}
-                >
-                  Sign In
-                </Button>
+                <div className={classes.wrapper}>
+                  <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}
+                    disabled={!dirty || !isValid || loading}
+                  >
+                    Sign In
+                  </Button>
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
               </Form>
             );
           }}
@@ -125,6 +149,17 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 }));
 

@@ -20,7 +20,7 @@ const FormikField = ({
       autoComplete='off'
       variant='outlined'
       fullWidth
-      error={errors[name] && touched[name] ? true : false}
+      error={errors[name] && touched[name]}
       helperText={<ErrorMessage name={name} />}
     />
   );

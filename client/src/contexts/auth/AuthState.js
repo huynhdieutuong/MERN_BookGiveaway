@@ -1,21 +1,23 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useContext } from 'react';
 import axios from 'axios';
 
 import AuthContext from './authContext';
 import AuthReducer from './authReducer';
+import ProfileContext from '../profile/profileContext';
 
 import { SIGNIN_SUCCESS, SIGNUP_SUCCESS, AUTH_FAIL } from '../types';
 
 const AuthState = (props) => {
+  const { getProfile } = useContext(ProfileContext);
+
   const initialState = {
-    user: null,
     error: null,
     message: null,
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  const { user, error, message } = state;
+  const { error, message } = state;
 
   const config = {
     headers: {
@@ -29,6 +31,8 @@ const AuthState = (props) => {
       await axios.post('/api/auth/login', formData, config);
 
       dispatch({ type: SIGNIN_SUCCESS });
+
+      getProfile();
       return true;
     } catch (error) {
       dispatch({
@@ -56,7 +60,6 @@ const AuthState = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
         error,
         message,
         signIn,

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { Grid, Hidden } from '@material-ui/core';
 
-import BookContext from '../contexts/book/bookContext';
-import Books from '../components/books/Books';
-import CategoryTree from '../components/books/CategoryTree';
-import NotFound from '../components/layout/NotFound';
+import BookContext from '../../contexts/book/bookContext';
+import Books from '../../components/books/Books';
+import CategoryTree from '../../components/books/CategoryTree';
+import NotFound from '../../components/layout/NotFound';
 
 const Home = ({ match }) => {
   const { slug, id } = match.params;

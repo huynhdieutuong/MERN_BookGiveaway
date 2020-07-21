@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
-import FormikField from '../components/formik-fields/FormikField';
-import AuthContext from '../contexts/auth/authContext';
+import FormikField from '../../components/formik-fields/FormikField';
+import AuthContext from '../../contexts/auth/authContext';
 
 const SignUp = () => {
   const classes = useStyles();

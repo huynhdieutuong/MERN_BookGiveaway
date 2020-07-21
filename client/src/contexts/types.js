@@ -12,3 +12,7 @@ export const GET_CATEGORY = 'GET_CATEGORY';
 export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
+
+// Profile
+export const GET_PROFILE = 'GET_PROFILE';
+export const ERROR_PROFILE = 'ERROR_PROFILE';

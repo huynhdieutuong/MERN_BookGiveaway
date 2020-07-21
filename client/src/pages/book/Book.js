@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 
-import Spinner from '../components/layout/Spinner';
-import BookContext from '../contexts/book/bookContext';
-import ImagesSlide from '../components/book/ImagesSlide';
-import BookInfo from '../components/book/BookInfo';
-import Participants from '../components/book/Participants';
-import NotFound from '../components/layout/NotFound';
-import Breadcrumb from '../components/book/Breadcrumb';
+import Spinner from '../../components/layout/Spinner';
+import BookContext from '../../contexts/book/bookContext';
+import ImagesSlide from '../../components/book/ImagesSlide';
+import BookInfo from '../../components/book/BookInfo';
+import Participants from '../../components/book/Participants';
+import NotFound from '../../components/layout/NotFound';
+import Breadcrumb from '../../components/book/Breadcrumb';
 
 const Book = ({ match }) => {
   const { loading, book, error, getBook } = useContext(BookContext);

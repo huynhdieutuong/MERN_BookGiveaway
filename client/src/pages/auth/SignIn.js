@@ -17,8 +17,8 @@ import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-import FormikField from '../components/formik-fields/FormikField';
-import AuthContext from '../contexts/auth/authContext';
+import FormikField from '../../components/formik-fields/FormikField';
+import AuthContext from '../../contexts/auth/authContext';
 
 const SignIn = () => {
   const classes = useStyles();

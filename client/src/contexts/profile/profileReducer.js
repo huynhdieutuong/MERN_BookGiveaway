@@ -1,25 +1,20 @@
-import { SIGNIN_SUCCESS, SIGNUP_SUCCESS, AUTH_FAIL } from '../types';
+import { GET_PROFILE, ERROR_PROFILE } from '../types';
 
 export default (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case SIGNIN_SUCCESS:
+    case GET_PROFILE:
       return {
         ...state,
+        profile: payload.data,
         error: null,
       };
-    case SIGNUP_SUCCESS:
-      return {
-        ...state,
-        error: null,
-        message: payload.message,
-      };
-    case AUTH_FAIL:
+    case ERROR_PROFILE:
       return {
         ...state,
         error: payload.error,
-        message: null,
+        profile: null,
       };
     default:
       return state;

@@ -8,12 +8,14 @@ export default (state, action) => {
       return {
         ...state,
         profile: payload.data,
+        loading: false,
         error: null,
       };
     case ERROR_PROFILE:
       return {
         ...state,
         error: payload.error,
+        loading: false,
         profile: null,
       };
     default:

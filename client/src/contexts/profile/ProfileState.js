@@ -8,13 +8,14 @@ import ProfileReducer from './profileReducer';
 
 const ProfileState = (props) => {
   const initialState = {
+    loading: true,
     profile: null,
     error: null,
   };
 
   const [state, dispatch] = useReducer(ProfileReducer, initialState);
 
-  const { profile, error } = state;
+  const { loading, profile, error } = state;
 
   // Get profile
   const getProfile = async () => {
@@ -33,6 +34,7 @@ const ProfileState = (props) => {
   return (
     <ProfileContext.Provider
       value={{
+        loading,
         profile,
         error,
         getProfile,

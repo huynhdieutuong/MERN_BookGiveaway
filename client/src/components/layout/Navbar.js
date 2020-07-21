@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -22,7 +22,11 @@ import {
 import SearchBook from '../books/SearchBook';
 import Drawer from './Drawer';
 
+import ProfileContext from '../../contexts/profile/profileContext';
+
 const Navbar = () => {
+  const { profile } = useContext(ProfileContext);
+
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -134,48 +138,55 @@ const Navbar = () => {
 
           <div className={classes.grow} />
 
-          <Button color='inherit'>
-            <Link
-              to='/sign-in'
-              style={{ textDecoration: 'none', color: 'white' }}
-            >
-              Sign In
-            </Link>
-          </Button>
-
-          {/* <div className={classes.sectionDesktop}>
-            <IconButton aria-label='show 4 new mails' color='inherit'>
-              <Badge badgeContent={4} color='secondary'>
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label='show 17 new notifications' color='inherit'>
-              <Badge badgeContent={17} color='secondary'>
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge='end'
-              aria-label='account of current user'
-              aria-controls={menuId}
-              aria-haspopup='true'
-              onClick={handleProfileMenuOpen}
-              color='inherit'
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label='show more'
-              aria-controls={mobileMenuId}
-              aria-haspopup='true'
-              onClick={handleMobileMenuOpen}
-              color='inherit'
-            >
-              <MoreIcon />
-            </IconButton>
-          </div> */}
+          {!profile ? (
+            <Button color='inherit'>
+              <Link
+                to='/sign-in'
+                style={{ textDecoration: 'none', color: 'white' }}
+              >
+                Sign In
+              </Link>
+            </Button>
+          ) : (
+            <Fragment>
+              <div className={classes.sectionDesktop}>
+                <IconButton aria-label='show 4 new mails' color='inherit'>
+                  <Badge badgeContent={4} color='secondary'>
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  aria-label='show 17 new notifications'
+                  color='inherit'
+                >
+                  <Badge badgeContent={17} color='secondary'>
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  edge='end'
+                  aria-label='account of current user'
+                  aria-controls={menuId}
+                  aria-haspopup='true'
+                  onClick={handleProfileMenuOpen}
+                  color='inherit'
+                >
+                  <AccountCircle />
+                </IconButton>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-label='show more'
+                  aria-controls={mobileMenuId}
+                  aria-haspopup='true'
+                  onClick={handleMobileMenuOpen}
+                  color='inherit'
+                >
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </Fragment>
+          )}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

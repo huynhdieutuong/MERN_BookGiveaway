@@ -30,13 +30,15 @@ const SignIn = () => {
     password: '',
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, { resetForm }) => {
     const { email, password } = values;
 
     if (!loading) {
       setLoading(true);
-      await signIn({ email, password });
+      const success = await signIn({ email, password });
       setLoading(false);
+
+      if (success) resetForm();
     }
   };
 

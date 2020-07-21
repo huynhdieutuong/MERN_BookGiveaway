@@ -29,6 +29,7 @@ const AuthState = (props) => {
       await axios.post('/api/auth/login', formData, config);
 
       dispatch({ type: SIGNIN_SUCCESS });
+      return true;
     } catch (error) {
       dispatch({
         type: AUTH_FAIL,
@@ -43,6 +44,7 @@ const AuthState = (props) => {
       const res = await axios.post('/api/auth/register', formData, config);
 
       dispatch({ type: SIGNUP_SUCCESS, payload: res.data });
+      return true;
     } catch (error) {
       dispatch({
         type: AUTH_FAIL,

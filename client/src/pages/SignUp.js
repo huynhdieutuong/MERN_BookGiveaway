@@ -32,18 +32,20 @@ const SignUp = () => {
     passwordConfirm: '',
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, { resetForm }) => {
     const { firstName, lastName, username, email, password } = values;
 
     if (!loading) {
       setLoading(true);
-      await signUp({
+      const success = await signUp({
         name: `${firstName} ${lastName}`,
         username,
         email,
         password,
       });
       setLoading(false);
+
+      if (success) resetForm();
     }
   };
 

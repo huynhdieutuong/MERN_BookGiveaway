@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = (user, statusCode, res) => {
+module.exports = (user, statusCode, res, redirect = false) => {
   const token = user.getSignedJwtToken();
 
   const options = {
@@ -14,7 +14,11 @@ module.exports = (user, statusCode, res) => {
     options.secure = true;
   }
 
-  res.status(statusCode).cookie('token', token, options).json({
-    success: true,
-  });
+  if (!redirect) {
+    res.status(statusCode).cookie('token', token, options).json({
+      success: true,
+    });
+  } else {
+    res.status(statusCode).cookie('token', token, options).redirect('/profile');
+  }
 };

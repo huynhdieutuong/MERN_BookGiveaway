@@ -195,5 +195,5 @@ exports.socialOAuth = asyncHandler(async (req, res, next) => {
     }
   }
 
-  sendTokenResponse(user, 200, res);
+  sendTokenResponse(user, 200, res, true);
 });

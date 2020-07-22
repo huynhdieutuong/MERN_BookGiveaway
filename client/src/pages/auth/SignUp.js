@@ -17,6 +17,7 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 
 import FormikField from '../../components/formik-fields/FormikField';
 import AuthContext from '../../contexts/auth/authContext';
+import SocialButtons from '../../components/auth/SocialButtons';
 
 const SignUp = () => {
   const classes = useStyles();
@@ -167,13 +168,15 @@ const SignUp = () => {
             </Link>
           </Grid>
         </Grid>
+
+        <SocialButtons />
       </div>
     </Container>
   );
 };
 
 const usernameRegex = /^\w+$/;
-const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/;
+const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/;
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().min(2, 'Too Short!').required('Required!'),

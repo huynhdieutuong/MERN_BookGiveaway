@@ -19,6 +19,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import FormikField from '../../components/formik-fields/FormikField';
 import AuthContext from '../../contexts/auth/authContext';
+import SocialButtons from '../../components/auth/SocialButtons';
 
 const SignIn = () => {
   const classes = useStyles();
@@ -124,6 +125,8 @@ const SignIn = () => {
             </Link>
           </Grid>
         </Grid>
+
+        <SocialButtons />
       </div>
     </Container>
   );

@@ -25,6 +25,11 @@ router.post('/register', authController.register);
 // @access  Public
 router.post('/login', passportLogin, authController.login);
 
+// @route   GET  /api/auth/logout
+// @desc    Logout user
+// @access  Public
+router.get('/logout', authController.logout);
+
 // @route   GET  /api/auth/confirmation/:token
 // @desc    Confirmation email
 // @access  Public

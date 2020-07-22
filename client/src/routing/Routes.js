@@ -5,6 +5,7 @@ import ProfileContext from '../contexts/profile/profileContext';
 import Spinner from '../components/layout/Spinner';
 import NotFound from '../components/layout/NotFound';
 import PrivateRoute from './PrivateRoute';
+import AuthRoute from './AuthRoute';
 
 import Books from '../pages/book/Books';
 import Book from '../pages/book/Book';
@@ -25,8 +26,8 @@ const Routes = () => {
   return (
     <Switch>
       <Route exact path='/' component={Books} />
-      <Route exact path='/sign-up' component={SignUp} />
-      <Route exact path='/sign-in' component={SignIn} />
+      <AuthRoute exact path='/sign-up' component={SignUp} />
+      <AuthRoute exact path='/sign-in' component={SignIn} />
       <PrivateRoute exact path='/profile' component={Profile} />
       <Route exact path='/:slug' component={Book} />
       <Route exact path='/:slug/:id' component={Books} /> {/* Category */}

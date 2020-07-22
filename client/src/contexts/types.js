@@ -11,6 +11,7 @@ export const GET_CATEGORY = 'GET_CATEGORY';
 // Auth
 export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
+export const SIGNOUT_SUCCESS = 'SIGNOUT_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 
 // Profile

@@ -1,10 +1,16 @@
-import { SIGNIN_SUCCESS, SIGNUP_SUCCESS, AUTH_FAIL } from '../types';
+import {
+  SIGNIN_SUCCESS,
+  SIGNUP_SUCCESS,
+  SIGNOUT_SUCCESS,
+  AUTH_FAIL,
+} from '../types';
 
 export default (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
     case SIGNIN_SUCCESS:
+    case SIGNOUT_SUCCESS:
       return {
         ...state,
         error: null,

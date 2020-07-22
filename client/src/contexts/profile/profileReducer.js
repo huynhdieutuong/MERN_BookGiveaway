@@ -14,7 +14,7 @@ export default (state, action) => {
     case ERROR_PROFILE:
       return {
         ...state,
-        error: payload.error,
+        error: payload,
         loading: false,
         profile: null,
       };

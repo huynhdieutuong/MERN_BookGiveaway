@@ -5,7 +5,12 @@ import AuthContext from './authContext';
 import AuthReducer from './authReducer';
 import ProfileContext from '../profile/profileContext';
 
-import { SIGNIN_SUCCESS, SIGNUP_SUCCESS, AUTH_FAIL } from '../types';
+import {
+  SIGNIN_SUCCESS,
+  SIGNUP_SUCCESS,
+  SIGNOUT_SUCCESS,
+  AUTH_FAIL,
+} from '../types';
 
 const AuthState = (props) => {
   const { getProfile } = useContext(ProfileContext);
@@ -57,6 +62,22 @@ const AuthState = (props) => {
     }
   };
 
+  // Sign out
+  const signOut = async () => {
+    try {
+      await axios.get('/api/auth/logout');
+
+      dispatch({ type: SIGNOUT_SUCCESS });
+
+      getProfile();
+    } catch (error) {
+      dispatch({
+        type: AUTH_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -64,6 +85,7 @@ const AuthState = (props) => {
         message,
         signIn,
         signUp,
+        signOut,
       }}
     >
       {props.children}

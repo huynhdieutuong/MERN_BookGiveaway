@@ -26,7 +26,7 @@ const ProfileState = (props) => {
     } catch (error) {
       dispatch({
         type: ERROR_PROFILE,
-        payload: error.response.data,
+        payload: error.response.statusText,
       });
     }
   };

@@ -23,9 +23,11 @@ import SearchBook from '../books/SearchBook';
 import Drawer from './Drawer';
 
 import ProfileContext from '../../contexts/profile/profileContext';
+import AuthContext from '../../contexts/auth/authContext';
 
 const Navbar = () => {
   const { profile } = useContext(ProfileContext);
+  const { signOut } = useContext(AuthContext);
 
   const classes = useStyles();
 
@@ -66,6 +68,14 @@ const Navbar = () => {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          signOut();
+          handleMenuClose();
+        }}
+      >
+        Sign out
+      </MenuItem>
     </Menu>
   );
 

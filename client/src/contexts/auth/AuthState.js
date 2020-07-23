@@ -10,6 +10,7 @@ import {
   SIGNUP_SUCCESS,
   SIGNOUT_SUCCESS,
   FORGOT_PASSWORD,
+  RESET_PASSWORD,
   AUTH_FAIL,
 } from '../types';
 
@@ -98,6 +99,25 @@ const AuthState = (props) => {
     }
   };
 
+  // Reset password
+  const resetPassword = async (formData, token) => {
+    try {
+      const res = await axios.put(
+        `/api/auth/reset-password/${token}`,
+        formData,
+        config
+      );
+
+      dispatch({ type: RESET_PASSWORD, payload: res.data });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: AUTH_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -107,6 +127,7 @@ const AuthState = (props) => {
         signUp,
         signOut,
         forgotPassword,
+        resetPassword,
       }}
     >
       {props.children}

@@ -13,6 +13,7 @@ export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNOUT_SUCCESS = 'SIGNOUT_SUCCESS';
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
+export const RESET_PASSWORD = 'RESET_PASSWORD';
 export const AUTH_FAIL = 'AUTH_FAIL';
 
 // Profile

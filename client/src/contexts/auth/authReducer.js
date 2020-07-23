@@ -3,6 +3,7 @@ import {
   SIGNUP_SUCCESS,
   SIGNOUT_SUCCESS,
   FORGOT_PASSWORD,
+  RESET_PASSWORD,
   AUTH_FAIL,
 } from '../types';
 
@@ -18,6 +19,7 @@ export default (state, action) => {
       };
     case SIGNUP_SUCCESS:
     case FORGOT_PASSWORD:
+    case RESET_PASSWORD:
       return {
         ...state,
         error: null,

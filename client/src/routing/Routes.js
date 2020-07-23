@@ -12,6 +12,7 @@ import Book from '../pages/book/Book';
 import SignIn from '../pages/auth/SignIn';
 import SignUp from '../pages/auth/SignUp';
 import Profile from '../pages/profile/Profile';
+import ForgotPassword from '../pages/auth/ForgotPassword';
 
 const Routes = () => {
   const { loading, getProfile } = useContext(ProfileContext);
@@ -28,6 +29,7 @@ const Routes = () => {
       <Route exact path='/' component={Books} />
       <AuthRoute exact path='/sign-up' component={SignUp} />
       <AuthRoute exact path='/sign-in' component={SignIn} />
+      <AuthRoute exact path='/forgot-password' component={ForgotPassword} />
       <PrivateRoute exact path='/profile' component={Profile} />
       <Route exact path='/:slug' component={Book} />
       <Route exact path='/:slug/:id' component={Books} /> {/* Category */}

@@ -2,6 +2,7 @@ import {
   SIGNIN_SUCCESS,
   SIGNUP_SUCCESS,
   SIGNOUT_SUCCESS,
+  FORGOT_PASSWORD,
   AUTH_FAIL,
 } from '../types';
 
@@ -16,6 +17,7 @@ export default (state, action) => {
         error: null,
       };
     case SIGNUP_SUCCESS:
+    case FORGOT_PASSWORD:
       return {
         ...state,
         error: null,

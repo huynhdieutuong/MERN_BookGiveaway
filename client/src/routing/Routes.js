@@ -14,6 +14,7 @@ import SignUp from '../pages/auth/SignUp';
 import Profile from '../pages/profile/Profile';
 import ForgotPassword from '../pages/auth/ForgotPassword';
 import ResetPassword from '../pages/auth/ResetPassword';
+import NotVerify from '../pages/auth/NotVerify';
 
 const Routes = () => {
   const { loading, getProfile } = useContext(ProfileContext);
@@ -36,6 +37,7 @@ const Routes = () => {
         path='/reset-password/:token'
         component={ResetPassword}
       />
+      <Route exact path='/not-verify' component={NotVerify} />
       <PrivateRoute exact path='/profile' component={Profile} />
       <Route exact path='/:slug' component={Book} />
       <Route exact path='/:slug/:id' component={Books} /> {/* Category */}

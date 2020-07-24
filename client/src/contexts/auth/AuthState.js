@@ -11,6 +11,7 @@ import {
   SIGNOUT_SUCCESS,
   FORGOT_PASSWORD,
   RESET_PASSWORD,
+  RESEND_EMAIL,
   AUTH_FAIL,
 } from '../types';
 
@@ -118,6 +119,20 @@ const AuthState = (props) => {
     }
   };
 
+  // Resend email to active account
+  const resendEmail = async () => {
+    try {
+      const res = await axios.get('/api/auth/resend');
+
+      dispatch({ type: RESEND_EMAIL, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: AUTH_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -128,6 +143,7 @@ const AuthState = (props) => {
         signOut,
         forgotPassword,
         resetPassword,
+        resendEmail,
       }}
     >
       {props.children}

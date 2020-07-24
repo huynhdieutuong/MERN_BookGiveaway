@@ -6,14 +6,9 @@ import ProfileContext from '../contexts/profile/profileContext';
 const AuthRoute = ({ component: Component, ...rest }) => {
   const { profile } = useContext(ProfileContext);
 
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        profile ? <Redirect to='/profile' /> : <Component {...props} />
-      }
-    />
-  );
+  if (profile) return <Redirect to='/profile' />;
+
+  return <Route {...rest} render={(props) => <Component {...props} />} />;
 };
 
 export default AuthRoute;

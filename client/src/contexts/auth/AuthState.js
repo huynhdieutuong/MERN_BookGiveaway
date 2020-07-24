@@ -14,6 +14,7 @@ import {
   RESEND_EMAIL,
   CONFIRM_EMAIL,
   AUTH_FAIL,
+  RESET_STATE,
 } from '../types';
 
 const AuthState = (props) => {
@@ -148,6 +149,10 @@ const AuthState = (props) => {
     }
   };
 
+  const resetState = () => {
+    dispatch({ type: RESET_STATE });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -160,6 +165,7 @@ const AuthState = (props) => {
         resetPassword,
         resendEmail,
         confirmEmail,
+        resetState,
       }}
     >
       {props.children}

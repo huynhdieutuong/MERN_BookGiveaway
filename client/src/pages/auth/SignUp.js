@@ -22,7 +22,7 @@ import SocialButtons from '../../components/auth/SocialButtons';
 const SignUp = () => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
-  const { error, message, signUp } = useContext(AuthContext);
+  const { error, message, signUp, resetState } = useContext(AuthContext);
 
   const initialValues = {
     firstName: '',
@@ -163,7 +163,12 @@ const SignUp = () => {
 
         <Grid container justify='flex-end'>
           <Grid item>
-            <Link to='/sign-in' variant='body2'>
+            <Link
+              to='/sign-in'
+              className={classes.link}
+              onClick={resetState}
+              variant='body2'
+            >
               Already have an account? Sign in
             </Link>
           </Grid>
@@ -228,6 +233,10 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12,
+  },
+  link: {
+    color: '#3f51b5',
+    textDecoration: 'none',
   },
 }));
 

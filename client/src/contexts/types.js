@@ -1,4 +1,5 @@
 export const SET_LOADING = 'SET_LOADING';
+export const RESET_STATE = 'RESET_STATE';
 
 // Book
 export const SET_FILTERS = 'SET_FILTERS';

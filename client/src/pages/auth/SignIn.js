@@ -24,7 +24,7 @@ import SocialButtons from '../../components/auth/SocialButtons';
 const SignIn = () => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
-  const { error, signIn } = useContext(AuthContext);
+  const { error, signIn, resetState } = useContext(AuthContext);
 
   const initialValues = {
     email: '',
@@ -115,12 +115,22 @@ const SignIn = () => {
         </Formik>
         <Grid container>
           <Grid item xs>
-            <Link to='/forgot-password' variant='body2'>
+            <Link
+              to='/forgot-password'
+              className={classes.link}
+              onClick={resetState}
+              variant='body2'
+            >
               Forgot password?
             </Link>
           </Grid>
           <Grid item>
-            <Link to='/sign-up' variant='body2'>
+            <Link
+              to='/sign-up'
+              className={classes.link}
+              onClick={resetState}
+              variant='body2'
+            >
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>
@@ -165,6 +175,10 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12,
+  },
+  link: {
+    color: '#3f51b5',
+    textDecoration: 'none',
   },
 }));
 

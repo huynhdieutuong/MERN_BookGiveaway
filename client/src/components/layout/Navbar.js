@@ -27,7 +27,7 @@ import AuthContext from '../../contexts/auth/authContext';
 
 const Navbar = () => {
   const { profile } = useContext(ProfileContext);
-  const { signOut } = useContext(AuthContext);
+  const { signOut, resetState } = useContext(AuthContext);
 
   const classes = useStyles();
 
@@ -152,6 +152,7 @@ const Navbar = () => {
             <Button color='inherit'>
               <Link
                 to='/sign-in'
+                onClick={resetState}
                 style={{ textDecoration: 'none', color: 'white' }}
               >
                 Sign In

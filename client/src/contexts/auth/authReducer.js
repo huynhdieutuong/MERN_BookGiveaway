@@ -7,6 +7,7 @@ import {
   RESEND_EMAIL,
   CONFIRM_EMAIL,
   AUTH_FAIL,
+  RESET_STATE,
 } from '../types';
 
 export default (state, action) => {
@@ -33,6 +34,11 @@ export default (state, action) => {
       return {
         ...state,
         error: payload.error,
+        message: null,
+      };
+    case RESET_STATE:
+      return {
+        error: null,
         message: null,
       };
     default:

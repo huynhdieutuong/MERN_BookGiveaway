@@ -15,6 +15,7 @@ export const SIGNOUT_SUCCESS = 'SIGNOUT_SUCCESS';
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
 export const RESET_PASSWORD = 'RESET_PASSWORD';
 export const RESEND_EMAIL = 'RESEND_EMAIL';
+export const CONFIRM_EMAIL = 'CONFIRM_EMAIL';
 export const AUTH_FAIL = 'AUTH_FAIL';
 
 // Profile

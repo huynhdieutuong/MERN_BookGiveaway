@@ -12,6 +12,7 @@ import {
   FORGOT_PASSWORD,
   RESET_PASSWORD,
   RESEND_EMAIL,
+  CONFIRM_EMAIL,
   AUTH_FAIL,
 } from '../types';
 
@@ -133,6 +134,20 @@ const AuthState = (props) => {
     }
   };
 
+  // Confirm email to active account
+  const confirmEmail = async (token) => {
+    try {
+      const res = await axios.get(`/api/auth/confirmation/${token}`);
+
+      dispatch({ type: CONFIRM_EMAIL, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: AUTH_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -144,6 +159,7 @@ const AuthState = (props) => {
         forgotPassword,
         resetPassword,
         resendEmail,
+        confirmEmail,
       }}
     >
       {props.children}

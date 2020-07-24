@@ -5,6 +5,7 @@ import {
   FORGOT_PASSWORD,
   RESET_PASSWORD,
   RESEND_EMAIL,
+  CONFIRM_EMAIL,
   AUTH_FAIL,
 } from '../types';
 
@@ -22,6 +23,7 @@ export default (state, action) => {
     case FORGOT_PASSWORD:
     case RESET_PASSWORD:
     case RESEND_EMAIL:
+    case CONFIRM_EMAIL:
       return {
         ...state,
         error: null,

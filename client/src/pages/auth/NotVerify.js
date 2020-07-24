@@ -18,6 +18,8 @@ const NotVerify = () => {
     setLoading(false);
   };
 
+  if (!profile) return <Redirect to='/sign-in' />;
+
   if (profile.isActive) return <Redirect to='/profile' />;
 
   if (loading) return <Spinner />;

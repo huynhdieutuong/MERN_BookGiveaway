@@ -1,11 +1,12 @@
 import React, { useState, Fragment, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import MenuIcon from '@material-ui/icons/Menu';
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import {
   AppBar,
   Toolbar,
@@ -17,6 +18,7 @@ import {
   Hidden,
   Link as NormalLink,
   Button,
+  Divider,
 } from '@material-ui/core';
 
 import SearchBook from '../books/SearchBook';
@@ -26,58 +28,24 @@ import ProfileContext from '../../contexts/profile/profileContext';
 import AuthContext from '../../contexts/auth/authContext';
 
 const Navbar = () => {
+  const history = useHistory();
   const { profile } = useContext(ProfileContext);
   const { signOut, resetState } = useContext(AuthContext);
 
   const classes = useStyles();
 
-  const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [isOpen, toggleDrawer] = useState(false);
 
-  const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem
-        onClick={() => {
-          signOut();
-          handleMenuClose();
-        }}
-      >
-        Sign out
-      </MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -90,15 +58,23 @@ const Navbar = () => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label='show 4 new mails' color='inherit'>
-          <Badge badgeContent={4} color='secondary'>
-            <MailIcon />
-          </Badge>
+      <MenuItem
+        onClick={() => {
+          handleMobileMenuClose(null);
+          history.push('/profile');
+        }}
+      >
+        <IconButton aria-label='account of current user' color='inherit'>
+          <AccountCircle />
         </IconButton>
-        <p>Messages</p>
+        <p>Profile</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMobileMenuClose(null);
+          history.push('/notifications');
+        }}
+      >
         <IconButton aria-label='show 11 new notifications' color='inherit'>
           <Badge badgeContent={11} color='secondary'>
             <NotificationsIcon />
@@ -106,16 +82,30 @@ const Navbar = () => {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label='account of current user'
-          aria-controls='primary-search-account-menu'
-          aria-haspopup='true'
-          color='inherit'
-        >
-          <AccountCircle />
+      <MenuItem
+        onClick={() => {
+          handleMobileMenuClose(null);
+          history.push('/messages');
+        }}
+      >
+        <IconButton aria-label='show 4 new mails' color='inherit'>
+          <Badge badgeContent={4} color='secondary'>
+            <MailIcon />
+          </Badge>
         </IconButton>
-        <p>Profile</p>
+        <p>Messages</p>
+      </MenuItem>
+      <Divider />
+      <MenuItem
+        onClick={() => {
+          handleMobileMenuClose(null);
+          signOut();
+        }}
+      >
+        <IconButton color='inherit'>
+          <MeetingRoomIcon />
+        </IconButton>
+        <p>Sign out</p>
       </MenuItem>
     </Menu>
   );
@@ -161,10 +151,12 @@ const Navbar = () => {
           ) : (
             <Fragment>
               <div className={classes.sectionDesktop}>
-                <IconButton aria-label='show 4 new mails' color='inherit'>
-                  <Badge badgeContent={4} color='secondary'>
-                    <MailIcon />
-                  </Badge>
+                <IconButton
+                  aria-label='account of current user'
+                  color='inherit'
+                  onClick={() => history.push('/profile')}
+                >
+                  <AccountCircle />
                 </IconButton>
                 <IconButton
                   aria-label='show 17 new notifications'
@@ -175,14 +167,21 @@ const Navbar = () => {
                   </Badge>
                 </IconButton>
                 <IconButton
-                  edge='end'
-                  aria-label='account of current user'
-                  aria-controls={menuId}
-                  aria-haspopup='true'
-                  onClick={handleProfileMenuOpen}
+                  aria-label='show 4 new mails'
                   color='inherit'
+                  onClick={() => history.push('/messages')}
                 >
-                  <AccountCircle />
+                  <Badge badgeContent={4} color='secondary'>
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                <Divider
+                  orientation='vertical'
+                  flexItem
+                  style={{ margin: '0 10px' }}
+                />
+                <IconButton color='inherit' onClick={() => signOut()}>
+                  <MeetingRoomIcon />
                 </IconButton>
               </div>
               <div className={classes.sectionMobile}>
@@ -201,7 +200,6 @@ const Navbar = () => {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 };

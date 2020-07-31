@@ -5,6 +5,7 @@ const colors = require('colors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cloudinary = require('cloudinary').v2;
+const path = require('path');
 
 // Passport
 require('./middlewares/passport');
@@ -34,6 +35,16 @@ app.use('/api/transactions', require('./routes/transactions'));
 
 // Error handler middleware
 app.use(require('./middlewares/errorHandler'));
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 // Port
 const port = process.env.PORT || 5000;

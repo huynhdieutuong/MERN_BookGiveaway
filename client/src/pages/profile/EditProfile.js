@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import EditProfileForm from '../../components/profile/EditProfileForm';
+import ChangePasswordForm from '../../components/profile/ChangePasswordForm';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -79,7 +80,7 @@ const EditProfile = () => {
         <EditProfileForm />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Change Password
+        <ChangePasswordForm />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Change Email

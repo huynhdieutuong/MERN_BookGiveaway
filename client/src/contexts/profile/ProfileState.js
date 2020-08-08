@@ -4,6 +4,7 @@ import axios from 'axios';
 import {
   GET_PROFILE,
   UPDATE_PROFILE,
+  CHANGE_PASSWORD,
   ERROR_PROFILE,
   UPDATE_FAIL,
 } from '../types';
@@ -57,6 +58,21 @@ const ProfileState = (props) => {
     }
   };
 
+  // Change passsword
+  const changePassword = async (formData) => {
+    try {
+      await axios.put('/api/profile/password', formData, config);
+
+      dispatch({ type: CHANGE_PASSWORD });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: UPDATE_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -65,6 +81,7 @@ const ProfileState = (props) => {
         error,
         getProfile,
         updateProfile,
+        changePassword,
       }}
     >
       {props.children}

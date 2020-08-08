@@ -8,28 +8,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import FormikField from '../formik-fields/FormikField';
 import ProfileContext from '../../contexts/profile/profileContext';
 
-const EditProfileForm = () => {
+const ChangePasswordForm = () => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-  const { error, profile, updateProfile } = useContext(ProfileContext);
+  const { error, changePassword } = useContext(ProfileContext);
 
   const initialValues = {
-    name: profile.name,
-    username: profile.username,
+    currentPassword: '',
+    password: '',
+    passwordConfirm: '',
   };
 
   const onSubmit = async (values, { resetForm }) => {
-    const { name, username } = values;
+    const { currentPassword, password } = values;
 
     if (!loading) {
       setMessage(null);
       setLoading(true);
-      const success = await updateProfile({ name, username });
+      const success = await changePassword({ currentPassword, password });
       setLoading(false);
 
       if (success) {
-        setMessage('Profile updated successfully');
+        setMessage('Password changed successfully');
         resetForm();
       }
     }
@@ -59,8 +60,9 @@ const EditProfileForm = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <FormikField
-                      name='name'
-                      label='Name'
+                      name='currentPassword'
+                      type='password'
+                      label='Current Password'
                       required
                       errors={errors}
                       touched={touched}
@@ -68,8 +70,19 @@ const EditProfileForm = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <FormikField
-                      name='username'
-                      label='Username'
+                      name='password'
+                      type='password'
+                      label='Password'
+                      required
+                      errors={errors}
+                      touched={touched}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormikField
+                      name='passwordConfirm'
+                      type='password'
+                      label='Confirm Password'
                       required
                       errors={errors}
                       touched={touched}
@@ -85,7 +98,7 @@ const EditProfileForm = () => {
                     className={classes.submit}
                     disabled={!dirty || !isValid || loading}
                   >
-                    Save
+                    Change Password
                   </Button>
                   {loading && (
                     <CircularProgress
@@ -103,14 +116,20 @@ const EditProfileForm = () => {
   );
 };
 
-const usernameRegex = /^\w+$/;
+const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/;
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Required!'),
-  username: Yup.string()
-    .matches(usernameRegex, 'Must not be contain special symbol or whitespace!')
-    .min(5, 'Minimum 5 characters required!')
-    .max(20, 'Maximum 20 characters required!')
+  currentPassword: Yup.string().required('Required!'),
+  password: Yup.string()
+    .matches(
+      strongPasswordRegex,
+      'Number, uppercase, lowercase and special character required!'
+    )
+    .min(8, 'Minimum 8 characters required!')
+    .max(100, 'Maximum 100 characters required!')
+    .required('Required!'),
+  passwordConfirm: Yup.string()
+    .oneOf([Yup.ref('password')], 'Password must be the same!')
     .required('Required!'),
 });
 
@@ -135,4 +154,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default EditProfileForm;
+export default ChangePasswordForm;

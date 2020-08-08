@@ -1,6 +1,7 @@
 import {
   GET_PROFILE,
   UPDATE_PROFILE,
+  CHANGE_PASSWORD,
   ERROR_PROFILE,
   UPDATE_FAIL,
 } from '../types';
@@ -15,6 +16,11 @@ export default (state, action) => {
         ...state,
         profile: payload.data,
         loading: false,
+        error: null,
+      };
+    case CHANGE_PASSWORD:
+      return {
+        ...state,
         error: null,
       };
     case UPDATE_FAIL:

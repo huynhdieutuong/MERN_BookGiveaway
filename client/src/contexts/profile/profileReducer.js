@@ -2,6 +2,7 @@ import {
   GET_PROFILE,
   UPDATE_PROFILE,
   CHANGE_PASSWORD,
+  CHANGE_EMAIL,
   ERROR_PROFILE,
   UPDATE_FAIL,
 } from '../types';
@@ -19,6 +20,7 @@ export default (state, action) => {
         error: null,
       };
     case CHANGE_PASSWORD:
+    case CHANGE_EMAIL:
       return {
         ...state,
         error: null,

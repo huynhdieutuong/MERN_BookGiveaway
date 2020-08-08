@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 
 import EditProfileForm from '../../components/profile/EditProfileForm';
 import ChangePasswordForm from '../../components/profile/ChangePasswordForm';
+import ChangeEmailForm from '../../components/profile/ChangeEmailForm';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -83,7 +84,7 @@ const EditProfile = () => {
         <ChangePasswordForm />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Change Email
+        <ChangeEmailForm />
       </TabPanel>
     </div>
   );

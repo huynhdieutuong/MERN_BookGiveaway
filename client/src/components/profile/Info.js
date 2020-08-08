@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Grid, Avatar, Typography, Button, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Info = () => {
   const classes = useStyles();
+  const history = useHistory();
   const { profile } = useContext(ProfileContext);
 
   const { name, email, username, avatarUrl, googleID, facebookID } = profile;
@@ -48,6 +50,7 @@ const Info = () => {
           style={{ marginTop: '10px', marginBottom: '20px' }}
           variant='contained'
           startIcon={<EditIcon />}
+          onClick={() => history.push('/edit-profile')}
         >
           Edit Profile
         </Button>

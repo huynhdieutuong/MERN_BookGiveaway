@@ -16,6 +16,7 @@ import ForgotPassword from '../pages/auth/ForgotPassword';
 import ResetPassword from '../pages/auth/ResetPassword';
 import NotVerify from '../pages/auth/NotVerify';
 import Confirmation from '../pages/auth/Confirmation';
+import EditProfile from '../pages/profile/EditProfile';
 
 const Routes = () => {
   const { loading, getProfile } = useContext(ProfileContext);
@@ -41,6 +42,7 @@ const Routes = () => {
       <Route exact path='/not-verify' component={NotVerify} />
       <Route exact path='/confirmation/:token' component={Confirmation} />
       <PrivateRoute exact path='/profile' component={Profile} />
+      <PrivateRoute exact path='/edit-profile' component={EditProfile} />
       <Route exact path='/:slug' component={Book} />
       <Route exact path='/:slug/:id' component={Books} /> {/* Category */}
       <Route component={NotFound} />

@@ -1,7 +1,12 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
 
-import { GET_PROFILE, ERROR_PROFILE } from '../types';
+import {
+  GET_PROFILE,
+  UPDATE_PROFILE,
+  ERROR_PROFILE,
+  UPDATE_FAIL,
+} from '../types';
 
 import ProfileContext from './profileContext';
 import ProfileReducer from './profileReducer';
@@ -17,6 +22,12 @@ const ProfileState = (props) => {
 
   const { loading, profile, error } = state;
 
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
   // Get profile
   const getProfile = async () => {
     try {
@@ -31,6 +42,21 @@ const ProfileState = (props) => {
     }
   };
 
+  // Update profile
+  const updateProfile = async (formData) => {
+    try {
+      const res = await axios.put('/api/profile', formData, config);
+
+      dispatch({ type: UPDATE_PROFILE, payload: res.data });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: UPDATE_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -38,6 +64,7 @@ const ProfileState = (props) => {
         profile,
         error,
         getProfile,
+        updateProfile,
       }}
     >
       {props.children}

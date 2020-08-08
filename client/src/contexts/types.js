@@ -24,5 +24,6 @@ export const GET_PROFILE = 'GET_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
+export const CHANGE_AVATAR = 'CHANGE_AVATAR';
 export const UPDATE_FAIL = 'UPDATE_FAIL';
 export const ERROR_PROFILE = 'ERROR_PROFILE';

@@ -3,6 +3,7 @@ import {
   UPDATE_PROFILE,
   CHANGE_PASSWORD,
   CHANGE_EMAIL,
+  CHANGE_AVATAR,
   ERROR_PROFILE,
   UPDATE_FAIL,
 } from '../types';
@@ -13,6 +14,7 @@ export default (state, action) => {
   switch (type) {
     case GET_PROFILE:
     case UPDATE_PROFILE:
+    case CHANGE_AVATAR:
       return {
         ...state,
         profile: payload.data,

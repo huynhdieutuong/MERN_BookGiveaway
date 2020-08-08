@@ -6,6 +6,7 @@ import {
   UPDATE_PROFILE,
   CHANGE_PASSWORD,
   CHANGE_EMAIL,
+  CHANGE_AVATAR,
   ERROR_PROFILE,
   UPDATE_FAIL,
 } from '../types';
@@ -89,6 +90,26 @@ const ProfileState = (props) => {
     }
   };
 
+  // Change avatar
+  const changeAvatar = async (formData) => {
+    try {
+      const res = await axios.put('/api/profile/avatar', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      dispatch({
+        type: CHANGE_AVATAR,
+        payload: res.data,
+      });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: UPDATE_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -99,6 +120,7 @@ const ProfileState = (props) => {
         updateProfile,
         changePassword,
         changeEmail,
+        changeAvatar,
       }}
     >
       {props.children}

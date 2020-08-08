@@ -19,6 +19,7 @@ import {
   Link as NormalLink,
   Button,
   Divider,
+  Avatar,
 } from '@material-ui/core';
 
 import SearchBook from '../books/SearchBook';
@@ -156,7 +157,11 @@ const Navbar = () => {
                   color='inherit'
                   onClick={() => history.push('/profile')}
                 >
-                  <AccountCircle />
+                  <Avatar
+                    alt={profile.name}
+                    src={profile.avatarUrl}
+                    className={classes.avatar}
+                  />
                 </IconButton>
                 <IconButton
                   aria-label='show 17 new notifications'
@@ -229,6 +234,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
+  },
+  avatar: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
   },
 }));
 

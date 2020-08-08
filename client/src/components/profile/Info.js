@@ -1,19 +1,16 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Grid, Avatar, Typography, Button, Divider } from '@material-ui/core';
+import { Grid, Typography, Button, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 
 import ProfileContext from '../../contexts/profile/profileContext';
+import ChangeAvatar from './ChangeAvatar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  large: {
-    width: theme.spacing(20),
-    height: theme.spacing(20),
   },
 }));
 
@@ -22,12 +19,12 @@ const Info = () => {
   const history = useHistory();
   const { profile } = useContext(ProfileContext);
 
-  const { name, email, username, avatarUrl, googleID, facebookID } = profile;
+  const { name, email, username, googleID, facebookID } = profile;
 
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} md={2}>
-        <Avatar alt={name} src={avatarUrl} className={classes.large} />
+        <ChangeAvatar />
       </Grid>
       <Grid item xs={12} md={8}>
         <Grid container spacing={2}>

@@ -17,6 +17,11 @@ router.get(
   booksController.getBooks
 );
 
+// @route   GET  /api/books/my
+// @desc    Get all my books
+// @access  Private
+router.get('/my', passportJWT, booksController.getMyBooks);
+
 // @route   GET  /api/books/:id
 // @desc    Get single book
 // @access  Public

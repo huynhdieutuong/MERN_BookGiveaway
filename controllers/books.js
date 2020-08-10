@@ -41,6 +41,23 @@ exports.getBook = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.getMyBooks = asyncHandler(async (req, res, next) => {
+  const books = await Book.find({ user: req.user.id }).select(
+    'title isGave createAt'
+  );
+
+  const myBooks = [];
+  for (let book of books) {
+    const requests = await Request.find({ book: book._id });
+    myBooks.push({ ...book._doc, requests: requests.length });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: myBooks,
+  });
+});
+
 exports.createBook = asyncHandler(async (req, res, next) => {
   form.parse(req, async (err, fields, files) => {
     const { title, description, author, category } = fields;

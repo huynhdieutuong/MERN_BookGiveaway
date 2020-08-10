@@ -5,6 +5,7 @@ import BookReducer from './bookReducer';
 import {
   SET_LOADING,
   GET_BOOKS,
+  GET_MY_BOOKS,
   GET_CATEGORIES,
   SET_FILTERS,
   GET_BOOK,
@@ -16,6 +17,7 @@ const BookState = (props) => {
   const initialState = {
     loading: true,
     books: [],
+    myBooks: [],
     totalPages: 0,
     categories: [],
     filters: {
@@ -36,6 +38,7 @@ const BookState = (props) => {
   const {
     loading,
     books,
+    myBooks,
     totalPages,
     categories,
     filters,
@@ -54,6 +57,25 @@ const BookState = (props) => {
       type: SET_FILTERS,
       payload: filters,
     });
+  };
+
+  // Get my books
+  const getMyBooks = async () => {
+    setLoading();
+
+    try {
+      const res = await axios.get('/api/books/my');
+
+      dispatch({
+        type: GET_MY_BOOKS,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response,
+      });
+    }
   };
 
   // Get books
@@ -134,6 +156,7 @@ const BookState = (props) => {
     <BookContext.Provider
       value={{
         loading,
+        myBooks,
         books,
         totalPages,
         filters,
@@ -147,6 +170,7 @@ const BookState = (props) => {
         setFilters,
         getBook,
         getCategory,
+        getMyBooks,
       }}
     >
       {props.children}

@@ -1,6 +1,7 @@
 import {
   SET_LOADING,
   GET_BOOKS,
+  GET_MY_BOOKS,
   GET_CATEGORIES,
   SET_FILTERS,
   GET_BOOK,
@@ -31,6 +32,12 @@ export default (state, action) => {
         books: payload.data,
         totalPages: payload.totalPages,
       };
+    case GET_MY_BOOKS:
+      return {
+        ...state,
+        loading: false,
+        myBooks: payload.data,
+      };
     case GET_CATEGORIES:
       return {
         ...state,
@@ -53,6 +60,8 @@ export default (state, action) => {
         ...state,
         error: payload.error,
         loading: false,
+        myBooks: [],
+        books: [],
         book: {},
         requests: [],
       };

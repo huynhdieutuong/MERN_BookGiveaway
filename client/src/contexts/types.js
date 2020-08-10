@@ -4,6 +4,7 @@ export const RESET_STATE = 'RESET_STATE';
 // Book
 export const SET_FILTERS = 'SET_FILTERS';
 export const GET_BOOKS = 'GET_BOOKS';
+export const GET_MY_BOOKS = 'GET_MY_BOOKS';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_BOOK = 'GET_BOOK';
 export const ERROR_BOOK = 'ERROR_BOOK';

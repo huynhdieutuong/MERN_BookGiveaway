@@ -9,6 +9,7 @@ import AuthRoute from './AuthRoute';
 
 import Books from '../pages/book/Books';
 import Book from '../pages/book/Book';
+import AddBook from '../pages/book/AddBook';
 import SignIn from '../pages/auth/SignIn';
 import SignUp from '../pages/auth/SignUp';
 import Profile from '../pages/profile/Profile';
@@ -43,6 +44,7 @@ const Routes = () => {
       <Route exact path='/confirmation/:token' component={Confirmation} />
       <PrivateRoute exact path='/profile' component={Profile} />
       <PrivateRoute exact path='/edit-profile' component={EditProfile} />
+      <PrivateRoute exact path='/add-book' component={AddBook} />
       <Route exact path='/:slug' component={Book} />
       <Route exact path='/:slug/:id' component={Books} /> {/* Category */}
       <Route component={NotFound} />

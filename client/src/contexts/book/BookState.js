@@ -152,6 +152,22 @@ const BookState = (props) => {
     }
   };
 
+  // Add book
+  const addBook = async (formData) => {
+    try {
+      await axios.post(`/api/books`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      return true;
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -171,6 +187,7 @@ const BookState = (props) => {
         getBook,
         getCategory,
         getMyBooks,
+        addBook,
       }}
     >
       {props.children}

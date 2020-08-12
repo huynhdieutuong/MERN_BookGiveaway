@@ -19,6 +19,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PresentToAllIcon from '@material-ui/icons/PresentToAll';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import parse from 'html-react-parser';
 
 import BookContext from '../../contexts/book/bookContext';
 
@@ -26,7 +27,6 @@ const BookInfo = () => {
   const classes = useStyles();
   const { book } = useContext(BookContext);
   const { _id, title, author, description, user, createAt } = book;
-
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -71,7 +71,7 @@ const BookInfo = () => {
       </CardActions>
       <CardContent>
         <Typography paragraph>
-          {description.split('\n\n')[0]}{' '}
+          {parse(description.split('\n\n')[0])}{' '}
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
@@ -89,7 +89,7 @@ const BookInfo = () => {
             .slice(1)
             .map((paragraph, index) => (
               <Typography key={index} paragraph>
-                {paragraph}
+                {parse(paragraph)}
               </Typography>
             ))}
         </Collapse>

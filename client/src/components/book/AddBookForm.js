@@ -39,12 +39,14 @@ const AddBookForm = () => {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append('images', files);
+      files.forEach((file) => formData.append('images', file));
       formData.append('title', title);
       formData.append('author', author);
       formData.append('category', category);
-      formData.append('description', description);
-
+      formData.append(
+        'description',
+        description.replace(/<p>/g, '').replace(/<\/p>/g, '\n\n')
+      );
       const success = await addBook(formData);
       setLoading(false);
 
@@ -118,6 +120,7 @@ const AddBookForm = () => {
                       const data = editor.getData();
                       getDescription(data);
                     }}
+                    config={{ enterMode: 'ENTER_BR' }}
                   />
                 </Grid>
                 <div className={classes.wrapper}>

@@ -17,6 +17,7 @@ const Confirmation = ({ match }) => {
 
   useEffect(() => {
     handleConfirm();
+    // eslint-disable-next-line
   }, []);
 
   if (loading) return <Spinner />;

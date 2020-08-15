@@ -11,11 +11,11 @@ import {
   IconButton,
   Tooltip,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
 import BasicTableHead from './BasicTableHead';
 import BasicTableToolbar from './BasicTableToolbar';
+import DeleteButton from './DeleteButton';
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -44,7 +44,15 @@ const stableSort = (array, comparator) => {
 };
 
 const BasicTable = (props) => {
-  const { tableName, headCells, rows, children, addButton, onSearch } = props;
+  const {
+    tableName,
+    headCells,
+    rows,
+    children,
+    addButton,
+    onSearch,
+    onDelete,
+  } = props;
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('desc');
@@ -107,11 +115,10 @@ const BasicTable = (props) => {
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title='Delete'>
-                          <IconButton aria-label='delete'>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
+
+                        {onDelete && (
+                          <DeleteButton onDelete={() => onDelete(row._id)} />
+                        )}
                       </TableCell>
                       {children(row, labelId)}
                     </TableRow>

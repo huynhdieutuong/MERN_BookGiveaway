@@ -11,6 +11,8 @@ import {
   GET_BOOK,
   ERROR_BOOK,
   GET_CATEGORY,
+  ADD_BOOK,
+  DELETE_BOOK,
 } from '../types';
 
 const BookState = (props) => {
@@ -155,8 +157,31 @@ const BookState = (props) => {
   // Add book
   const addBook = async (formData) => {
     try {
-      await axios.post(`/api/books`, formData, {
+      const res = await axios.post(`/api/books`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      dispatch({
+        type: ADD_BOOK,
+        payload: res.data,
+      });
+
+      return true;
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
+  // delete book
+  const deleteBook = async (id) => {
+    try {
+      await axios.delete(`/api/books/${id}`);
+
+      dispatch({
+        type: DELETE_BOOK,
+        payload: id,
       });
 
       return true;
@@ -188,6 +213,7 @@ const BookState = (props) => {
         getCategory,
         getMyBooks,
         addBook,
+        deleteBook,
       }}
     >
       {props.children}

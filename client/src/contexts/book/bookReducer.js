@@ -7,6 +7,8 @@ import {
   GET_BOOK,
   ERROR_BOOK,
   GET_CATEGORY,
+  DELETE_BOOK,
+  ADD_BOOK,
 } from '../types';
 
 export default (state, action) => {
@@ -37,6 +39,16 @@ export default (state, action) => {
         ...state,
         loading: false,
         myBooks: payload.data,
+      };
+    case ADD_BOOK:
+      return {
+        ...state,
+        myBooks: [payload.data, ...state.myBooks],
+      };
+    case DELETE_BOOK:
+      return {
+        ...state,
+        myBooks: state.myBooks.filter((book) => book._id !== payload),
       };
     case GET_CATEGORIES:
       return {

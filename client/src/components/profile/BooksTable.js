@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, Fragment, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { TableCell } from '@material-ui/core';
 
@@ -23,7 +24,7 @@ const createData = (_id, title, status, requests, createAt) => {
 };
 
 const BooksTable = () => {
-  const { loading, myBooks, getMyBooks } = useContext(BookContext);
+  const { loading, myBooks, getMyBooks, deleteBook } = useContext(BookContext);
   const [books, setBooks] = useState([]);
 
   const onSearch = (e) => {
@@ -42,6 +43,7 @@ const BooksTable = () => {
   useEffect(() => {
     if (myBooks.length === 0) getMyBooks();
     setBooks(myBooks);
+    // eslint-disable-next-line
   }, [myBooks]);
 
   if (loading) return <Spinner />;
@@ -53,11 +55,12 @@ const BooksTable = () => {
       rows={rows}
       addButton='/add-book'
       onSearch={onSearch}
+      onDelete={deleteBook}
     >
       {(row, labelId) => (
         <Fragment>
           <TableCell component='th' id={labelId} scope='row' padding='none'>
-            {row.title}
+            <Link to={`/${row._id}`}>{row.title}</Link>
           </TableCell>
           <TableCell align='right'>{row.status ? 'Gave' : 'Instock'}</TableCell>
           <TableCell align='right'>{row.requests}</TableCell>

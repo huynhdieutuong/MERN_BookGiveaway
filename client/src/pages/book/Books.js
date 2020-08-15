@@ -17,6 +17,7 @@ const Home = ({ match }) => {
     } else {
       getBooks();
     }
+    // eslint-disable-next-line
   }, [filters]);
 
   if (error) return <NotFound />;

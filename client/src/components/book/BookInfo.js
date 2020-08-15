@@ -16,16 +16,18 @@ import {
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PresentToAllIcon from '@material-ui/icons/PresentToAll';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import parse from 'html-react-parser';
 
 import BookContext from '../../contexts/book/bookContext';
+import ProfileContext from '../../contexts/profile/profileContext';
+import ActionButton from './ActionButton';
 
 const BookInfo = () => {
   const classes = useStyles();
   const { book } = useContext(BookContext);
+  const { profile } = useContext(ProfileContext);
   const { _id, title, author, description, user, createAt } = book;
   const [expanded, setExpanded] = useState(false);
 
@@ -38,9 +40,7 @@ const BookInfo = () => {
       <CardHeader
         avatar={<Avatar src={user.avatarUrl} />}
         action={
-          <IconButton aria-label='settings'>
-            <MoreVertIcon />
-          </IconButton>
+          profile._id === book.user._id ? <ActionButton id={_id} /> : null
         }
         title={user.name}
         subheader={<Moment fromNow>{createAt}</Moment>}

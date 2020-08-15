@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, Fragment } from 'react';
+import React, { useContext, useEffect, Fragment, useState } from 'react';
 import Moment from 'react-moment';
 import { TableCell } from '@material-ui/core';
 
 import Spinner from '../layout/Spinner';
 import BookContext from '../../contexts/book/bookContext';
-import EnhancedTable from '../enhanced-table/EnhancedTable';
+import BasicTable from '../table/BasicTable';
 
 const headCells = [
   {
@@ -24,19 +24,36 @@ const createData = (_id, title, status, requests, createAt) => {
 
 const BooksTable = () => {
   const { loading, myBooks, getMyBooks } = useContext(BookContext);
+  const [books, setBooks] = useState([]);
 
-  const rows = myBooks.map((book) =>
+  const onSearch = (e) => {
+    const filtered = myBooks.filter(
+      (book) =>
+        book.title.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1
+    );
+
+    setBooks(filtered);
+  };
+
+  const rows = books.map((book) =>
     createData(book._id, book.title, book.isGave, book.requests, book.createAt)
   );
 
   useEffect(() => {
-    getMyBooks();
-  }, []);
+    if (myBooks.length === 0) getMyBooks();
+    setBooks(myBooks);
+  }, [myBooks]);
 
   if (loading) return <Spinner />;
 
   return (
-    <EnhancedTable tableName='Books' headCells={headCells} rows={rows}>
+    <BasicTable
+      tableName='Books'
+      headCells={headCells}
+      rows={rows}
+      addButton='/add-book'
+      onSearch={onSearch}
+    >
       {(row, labelId) => (
         <Fragment>
           <TableCell component='th' id={labelId} scope='row' padding='none'>
@@ -49,7 +66,7 @@ const BooksTable = () => {
           </TableCell>
         </Fragment>
       )}
-    </EnhancedTable>
+    </BasicTable>
   );
 };
 

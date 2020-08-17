@@ -6,31 +6,31 @@ import {
   CardHeader,
   CardActions,
   Avatar,
-  IconButton,
   Button,
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import ProfileContext from '../../contexts/profile/profileContext';
 import BookContext from '../../contexts/book/bookContext';
+import DeleteButton from '../table/DeleteButton';
 
 const ParticipantItem = ({ request }) => {
   const classes = useStyles();
   const { profile } = useContext(ProfileContext);
-  const { book } = useContext(BookContext);
+  const { book, deleteRequest } = useContext(BookContext);
   const { user, createAt } = request;
 
   const isOwnerBook = profile && profile._id === book.user._id;
+  const isOwnerRequest = profile && profile._id === request.user._id;
 
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={<Avatar src={user.avatarUrl} />}
         action={
-          <IconButton aria-label='settings'>
-            <MoreVertIcon />
-          </IconButton>
+          isOwnerRequest ? (
+            <DeleteButton onDelete={() => deleteRequest(request._id)} />
+          ) : null
         }
         title={user.name}
         subheader={<Moment fromNow>{createAt}</Moment>}

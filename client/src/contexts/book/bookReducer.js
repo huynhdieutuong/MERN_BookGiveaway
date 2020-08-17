@@ -11,6 +11,8 @@ import {
   ADD_BOOK,
   EDIT_BOOK,
   CREATE_REQUEST,
+  DELETE_REQUEST,
+  GET_MY_REQUESTS,
 } from '../types';
 
 export default (state, action) => {
@@ -80,6 +82,20 @@ export default (state, action) => {
       return {
         ...state,
         requests: [payload.data, ...state.requests],
+      };
+    case DELETE_REQUEST:
+      return {
+        ...state,
+        requests: state.requests.filter((request) => request._id !== payload),
+        myRequests: state.myRequests.filter(
+          (request) => request._id !== payload
+        ),
+      };
+    case GET_MY_REQUESTS:
+      return {
+        ...state,
+        loading: false,
+        myRequests: payload.data,
       };
     case ERROR_BOOK:
       return {

@@ -15,6 +15,8 @@ import {
   DELETE_BOOK,
   EDIT_BOOK,
   CREATE_REQUEST,
+  DELETE_REQUEST,
+  GET_MY_REQUESTS,
 } from '../types';
 
 const BookState = (props) => {
@@ -33,6 +35,7 @@ const BookState = (props) => {
     },
     book: null,
     requests: [],
+    myRequests: [],
     error: null,
     category: {},
   };
@@ -48,6 +51,7 @@ const BookState = (props) => {
     filters,
     book,
     requests,
+    myRequests,
     error,
     category,
   } = state;
@@ -232,6 +236,42 @@ const BookState = (props) => {
     }
   };
 
+  // Delete request
+  const deleteRequest = async (id) => {
+    try {
+      await axios.delete(`/api/requests/${id}`);
+
+      dispatch({
+        type: DELETE_REQUEST,
+        payload: id,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
+  // Get my requests
+  const getMyRequests = async () => {
+    setLoading();
+
+    try {
+      const res = await axios.get('/api/requests/my?limit=1000');
+
+      dispatch({
+        type: GET_MY_REQUESTS,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response,
+      });
+    }
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -243,6 +283,7 @@ const BookState = (props) => {
         categories,
         book,
         requests,
+        myRequests,
         error,
         category,
         getBooks,
@@ -255,6 +296,8 @@ const BookState = (props) => {
         deleteBook,
         editBook,
         createRequest,
+        deleteRequest,
+        getMyRequests,
       }}
     >
       {props.children}

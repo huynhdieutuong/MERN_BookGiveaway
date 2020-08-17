@@ -30,7 +30,11 @@ router.get(
   '/my',
   advancedResults('myRequests', Request, {
     path: 'book',
-    select: 'imageUrls title slug',
+    select: 'imageUrls title slug user',
+    populate: {
+      path: 'user',
+      select: 'name',
+    },
   }),
   requestsController.getRequests
 );

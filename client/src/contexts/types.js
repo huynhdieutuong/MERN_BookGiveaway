@@ -13,6 +13,8 @@ export const EDIT_BOOK = 'EDIT_BOOK';
 export const ERROR_BOOK = 'ERROR_BOOK';
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const CREATE_REQUEST = 'CREATE_REQUEST';
+export const DELETE_REQUEST = 'DELETE_REQUEST';
+export const GET_MY_REQUESTS = 'GET_MY_REQUESTS';
 
 // Auth
 export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';

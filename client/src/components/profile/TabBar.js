@@ -7,6 +7,7 @@ import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import TransformIcon from '@material-ui/icons/Transform';
 
 import BooksTable from './BooksTable';
+import RequestsTable from './RequestsTable';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -86,7 +87,7 @@ const TabBar = () => {
         <BooksTable />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        My Requests
+        <RequestsTable />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Transactions

@@ -18,18 +18,20 @@ import FormikField from '../formik-fields/FormikField';
 import BookContext from '../../contexts/book/bookContext';
 import UploadImages from './UploadImages';
 
-const AddBookForm = () => {
+const EditBookForm = () => {
   const classes = useStyles();
   const history = useHistory();
+  const { book, categories, editBook } = useContext(BookContext);
   const [loading, setLoading] = useState(false);
   const [files, getFiles] = useState(null);
-  const [description, getDescription] = useState(null);
-  const [category, getCategory] = useState(null);
-  const { categories, addBook } = useContext(BookContext);
+  const [description, getDescription] = useState(
+    '<p>' + book.description.replace(/\n\n/g, '</p><p>') + '</p>'
+  );
+  const [category, getCategory] = useState(book.category);
 
   const initialValues = {
-    title: '',
-    author: '',
+    title: book.title,
+    author: book.author,
   };
 
   const onSubmit = async (values, { resetForm }) => {
@@ -39,7 +41,9 @@ const AddBookForm = () => {
       setLoading(true);
 
       const formData = new FormData();
-      files.forEach((file) => formData.append('images', file));
+      if (files) {
+        files.forEach((file) => formData.append('images', file));
+      }
       formData.append('title', title);
       formData.append('author', author);
       formData.append('category', category._id);
@@ -47,14 +51,10 @@ const AddBookForm = () => {
         'description',
         description.replace(/<p>/g, '').replace(/<\/p>/g, '\n\n')
       );
-      const success = await addBook(formData);
+      const success = await editBook(book._id, formData);
       setLoading(false);
 
       if (success) {
-        resetForm();
-        getFiles(null);
-        getDescription(null);
-        getCategory(null);
         history.push('/profile');
       }
     }
@@ -71,7 +71,7 @@ const AddBookForm = () => {
           <Form className={classes.form}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={4}>
-                <UploadImages getFiles={getFiles} />
+                <UploadImages getFiles={getFiles} imageUrls={book.imageUrls} />
               </Grid>
               <Grid item xs={12} sm={12} md={8}>
                 <Grid container spacing={2}>
@@ -97,6 +97,7 @@ const AddBookForm = () => {
                 <Grid item xs={12}>
                   <Autocomplete
                     id='category'
+                    value={category}
                     options={categories}
                     getOptionLabel={(option) => option.name}
                     className={classes.category}
@@ -116,6 +117,7 @@ const AddBookForm = () => {
                   </Typography>
                   <CKEditor
                     editor={ClassicEditor}
+                    data={description}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       getDescription(data);
@@ -130,16 +132,9 @@ const AddBookForm = () => {
                     variant='contained'
                     color='primary'
                     className={classes.submit}
-                    disabled={
-                      !dirty ||
-                      !isValid ||
-                      loading ||
-                      !files ||
-                      !description ||
-                      !category
-                    }
+                    disabled={!isValid || loading || !description || !category}
                   >
-                    Add
+                    Save
                   </Button>
                   {loading && (
                     <CircularProgress
@@ -188,4 +183,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default AddBookForm;
+export default EditBookForm;

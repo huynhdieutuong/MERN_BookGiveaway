@@ -113,7 +113,7 @@ exports.editBook = asyncHandler(async (req, res, next) => {
       );
 
     // Upload images
-    const imageUrls = await uploadImages(next, files.images, book, true);
+    const imageUrls = await uploadImages(next, files.images, book);
     if (!imageUrls) return;
 
     // Edit book
@@ -157,8 +157,8 @@ exports.deleteBook = asyncHandler(async (req, res, next) => {
 });
 
 // Upload images
-const uploadImages = async (next, filesImages, book, edit = false) => {
-  const imageUrls = edit ? [...book.imageUrls] : [];
+const uploadImages = async (next, filesImages, book) => {
+  const imageUrls = [];
 
   // Validate images
   if (filesImages) {

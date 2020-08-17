@@ -13,6 +13,7 @@ import {
   GET_CATEGORY,
   ADD_BOOK,
   DELETE_BOOK,
+  EDIT_BOOK,
 } from '../types';
 
 const BookState = (props) => {
@@ -174,7 +175,7 @@ const BookState = (props) => {
     }
   };
 
-  // delete book
+  // Delete book
   const deleteBook = async (id) => {
     try {
       await axios.delete(`/api/books/${id}`);
@@ -182,6 +183,26 @@ const BookState = (props) => {
       dispatch({
         type: DELETE_BOOK,
         payload: id,
+      });
+
+      return true;
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
+  // Edit book
+  const editBook = async (id, formData) => {
+    try {
+      const res = await axios.put(`/api/books/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      dispatch({
+        type: EDIT_BOOK,
+        payload: res.data,
       });
 
       return true;
@@ -214,6 +235,7 @@ const BookState = (props) => {
         getMyBooks,
         addBook,
         deleteBook,
+        editBook,
       }}
     >
       {props.children}

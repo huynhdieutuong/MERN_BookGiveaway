@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { RootRef, Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const UploadImages = ({ getFiles }) => {
+const UploadImages = ({ getFiles, imageUrls }) => {
   const classes = useStyles();
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -29,6 +29,16 @@ const UploadImages = ({ getFiles }) => {
     </div>
   ));
 
+  const currentThumbs = imageUrls
+    ? imageUrls.map((url, index) => (
+        <div className={classes.thumb} key={index}>
+          <div className={classes.thumbInner}>
+            <img src={url} className={classes.img} alt='book-cover' />
+          </div>
+        </div>
+      ))
+    : null;
+
   useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
@@ -43,7 +53,9 @@ const UploadImages = ({ getFiles }) => {
         <input {...getInputProps()} />
         <Typography>Drag 'n' drop some images here *</Typography>
       </Paper>
-      <aside className={classes.thumbsContainer}>{thumbs}</aside>
+      <aside className={classes.thumbsContainer}>
+        {thumbs.length > 0 ? thumbs : currentThumbs}
+      </aside>
     </RootRef>
   );
 };

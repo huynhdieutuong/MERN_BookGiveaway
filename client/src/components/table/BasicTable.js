@@ -8,14 +8,12 @@ import {
   TablePagination,
   TableRow,
   Paper,
-  IconButton,
-  Tooltip,
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
 
 import BasicTableHead from './BasicTableHead';
 import BasicTableToolbar from './BasicTableToolbar';
 import DeleteButton from './DeleteButton';
+import EditButton from './EditButton';
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -50,6 +48,7 @@ const BasicTable = (props) => {
     rows,
     children,
     addButton,
+    editButton,
     onSearch,
     onDelete,
   } = props;
@@ -110,12 +109,9 @@ const BasicTable = (props) => {
                   return (
                     <TableRow hover role='checkbox' tabIndex={-1} key={row._id}>
                       <TableCell align='left'>
-                        <Tooltip title='Edit'>
-                          <IconButton aria-label='edit'>
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-
+                        {editButton && (
+                          <EditButton editButton={editButton} id={row._id} />
+                        )}
                         {onDelete && (
                           <DeleteButton onDelete={() => onDelete(row._id)} />
                         )}

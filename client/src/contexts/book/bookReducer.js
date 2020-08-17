@@ -9,6 +9,7 @@ import {
   GET_CATEGORY,
   DELETE_BOOK,
   ADD_BOOK,
+  EDIT_BOOK,
 } from '../types';
 
 export default (state, action) => {
@@ -44,6 +45,13 @@ export default (state, action) => {
       return {
         ...state,
         myBooks: [payload.data, ...state.myBooks],
+      };
+    case EDIT_BOOK:
+      return {
+        ...state,
+        myBooks: state.myBooks.map((book) =>
+          book._id !== payload.data._id ? book : payload.data
+        ),
       };
     case DELETE_BOOK:
       return {

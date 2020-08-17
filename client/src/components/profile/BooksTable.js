@@ -54,6 +54,7 @@ const BooksTable = () => {
       headCells={headCells}
       rows={rows}
       addButton='/add-book'
+      editButton='/edit-book'
       onSearch={onSearch}
       onDelete={deleteBook}
     >

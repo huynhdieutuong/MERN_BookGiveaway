@@ -4,6 +4,7 @@ import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import DeleteButton from '../table/DeleteButton';
+import EditButton from '../table/EditButton';
 import BookContext from '../../contexts/book/bookContext';
 
 const ITEM_HEIGHT = 48;
@@ -51,6 +52,9 @@ const ActionButton = ({ id }) => {
           },
         }}
       >
+        <MenuItem onClick={handleClose}>
+          <EditButton editButton='/edit-book' id={id} label='Edit' />
+        </MenuItem>
         <MenuItem onClick={handleClose}>
           <DeleteButton onDelete={onDelete} label='Delete' />
         </MenuItem>

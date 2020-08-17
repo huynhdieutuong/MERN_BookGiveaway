@@ -9,6 +9,7 @@ export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_BOOK = 'GET_BOOK';
 export const ADD_BOOK = 'ADD_BOOK';
 export const DELETE_BOOK = 'DELETE_BOOK';
+export const EDIT_BOOK = 'EDIT_BOOK';
 export const ERROR_BOOK = 'ERROR_BOOK';
 export const GET_CATEGORY = 'GET_CATEGORY';
 

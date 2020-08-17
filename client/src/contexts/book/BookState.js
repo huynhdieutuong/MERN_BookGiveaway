@@ -14,6 +14,7 @@ import {
   ADD_BOOK,
   DELETE_BOOK,
   EDIT_BOOK,
+  CREATE_REQUEST,
 } from '../types';
 
 const BookState = (props) => {
@@ -214,6 +215,23 @@ const BookState = (props) => {
     }
   };
 
+  // Create request (Enter giveaway)
+  const createRequest = async (id) => {
+    try {
+      const res = await axios.post(`/api/books/${id}/requests`);
+
+      dispatch({
+        type: CREATE_REQUEST,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -236,6 +254,7 @@ const BookState = (props) => {
         addBook,
         deleteBook,
         editBook,
+        createRequest,
       }}
     >
       {props.children}

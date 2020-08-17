@@ -10,6 +10,7 @@ import {
   DELETE_BOOK,
   ADD_BOOK,
   EDIT_BOOK,
+  CREATE_REQUEST,
 } from '../types';
 
 export default (state, action) => {
@@ -74,6 +75,11 @@ export default (state, action) => {
       return {
         ...state,
         category: payload.data,
+      };
+    case CREATE_REQUEST:
+      return {
+        ...state,
+        requests: [payload.data, ...state.requests],
       };
     case ERROR_BOOK:
       return {

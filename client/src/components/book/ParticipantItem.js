@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Moment from 'react-moment';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -12,9 +12,16 @@ import {
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import ProfileContext from '../../contexts/profile/profileContext';
+import BookContext from '../../contexts/book/bookContext';
+
 const ParticipantItem = ({ request }) => {
   const classes = useStyles();
+  const { profile } = useContext(ProfileContext);
+  const { book } = useContext(BookContext);
   const { user, createAt } = request;
+
+  const isOwnerBook = profile && profile._id === book.user._id;
 
   return (
     <Card className={classes.root}>
@@ -28,11 +35,13 @@ const ParticipantItem = ({ request }) => {
         title={user.name}
         subheader={<Moment fromNow>{createAt}</Moment>}
       />
-      {/* <CardActions disableSpacing>
-        <Button variant='contained' className={classes.button}>
-          Choose
-        </Button>
-      </CardActions> */}
+      {isOwnerBook && (
+        <CardActions disableSpacing>
+          <Button variant='contained' className={classes.button}>
+            Choose
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Moment from 'react-moment';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import {
@@ -12,6 +13,7 @@ import {
   Typography,
   Button,
   Collapse,
+  CircularProgress,
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -26,13 +28,30 @@ import ActionButton from './ActionButton';
 
 const BookInfo = () => {
   const classes = useStyles();
-  const { book } = useContext(BookContext);
+  const history = useHistory();
+  const { book, requests, createRequest } = useContext(BookContext);
   const { profile } = useContext(ProfileContext);
   const { _id, title, author, description, user, createAt } = book;
   const [expanded, setExpanded] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  let isEnterGiveaway = false;
+  if (profile) {
+    requests.forEach((request) => {
+      if (request.user._id === profile._id) isEnterGiveaway = true;
+    });
+  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const enterGiveaway = async () => {
+    if (!profile) return history.push('/sign-in');
+
+    setLoading(true);
+    await createRequest(_id);
+    setLoading(false);
   };
 
   return (
@@ -40,7 +59,9 @@ const BookInfo = () => {
       <CardHeader
         avatar={<Avatar src={user.avatarUrl} />}
         action={
-          profile._id === book.user._id ? <ActionButton id={_id} /> : null
+          profile && profile._id === book.user._id ? (
+            <ActionButton id={_id} />
+          ) : null
         }
         title={user.name}
         subheader={<Moment fromNow>{createAt}</Moment>}
@@ -54,14 +75,26 @@ const BookInfo = () => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Button
-          variant='contained'
-          color='secondary'
-          className={classes.button}
-          startIcon={<PresentToAllIcon />}
-        >
-          Enter Giveaway
-        </Button>
+        <div className={classes.wrapper}>
+          <Button
+            variant='contained'
+            color='secondary'
+            className={classes.button}
+            startIcon={<PresentToAllIcon />}
+            disabled={
+              (profile && profile._id === book.user._id) ||
+              isEnterGiveaway ||
+              book.isGave ||
+              loading
+            }
+            onClick={enterGiveaway}
+          >
+            Enter Giveaway
+          </Button>
+          {loading && (
+            <CircularProgress size={24} className={classes.buttonProgress} />
+          )}
+        </div>
         <IconButton aria-label='add to favorites'>
           <FavoriteIcon fontSize='large' />
         </IconButton>
@@ -126,6 +159,17 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: 'rotate(180deg)',
     padding: '8px',
+  },
+  wrapper: {
+    position: 'relative',
+    width: '100%',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 }));
 

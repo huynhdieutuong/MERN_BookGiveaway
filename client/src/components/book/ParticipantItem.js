@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Moment from 'react-moment';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -16,12 +17,18 @@ import DeleteButton from '../table/DeleteButton';
 
 const ParticipantItem = ({ request }) => {
   const classes = useStyles();
+  const history = useHistory();
   const { profile } = useContext(ProfileContext);
-  const { book, deleteRequest } = useContext(BookContext);
+  const { book, deleteRequest, createTransaction } = useContext(BookContext);
   const { user, createAt } = request;
 
   const isOwnerBook = profile && profile._id === book.user._id;
   const isOwnerRequest = profile && profile._id === request.user._id;
+
+  const chooseReceiver = () => {
+    createTransaction(request._id);
+    history.push('/profile');
+  };
 
   return (
     <Card className={classes.root}>
@@ -37,7 +44,11 @@ const ParticipantItem = ({ request }) => {
       />
       {isOwnerBook && (
         <CardActions disableSpacing>
-          <Button variant='contained' className={classes.button}>
+          <Button
+            variant='contained'
+            className={classes.button}
+            onClick={chooseReceiver}
+          >
             Choose
           </Button>
         </CardActions>

@@ -49,8 +49,8 @@ const RequestsTable = () => {
   );
 
   useEffect(() => {
-    if (myRequests.length === 0) getMyRequests();
-    setRequests(myRequests);
+    if (!myRequests) getMyRequests();
+    if (myRequests) setRequests(myRequests);
     // eslint-disable-next-line
   }, [myRequests]);
 

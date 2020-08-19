@@ -41,8 +41,8 @@ const BooksTable = () => {
   );
 
   useEffect(() => {
-    if (myBooks.length === 0) getMyBooks();
-    setBooks(myBooks);
+    if (!myBooks) getMyBooks();
+    if (myBooks) setBooks(myBooks);
     // eslint-disable-next-line
   }, [myBooks]);
 

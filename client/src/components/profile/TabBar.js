@@ -8,6 +8,7 @@ import TransformIcon from '@material-ui/icons/Transform';
 
 import BooksTable from './BooksTable';
 import RequestsTable from './RequestsTable';
+import TransactionsTable from './TransactionsTable';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -90,7 +91,7 @@ const TabBar = () => {
         <RequestsTable />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Transactions
+        <TransactionsTable />
       </TabPanel>
     </div>
   );

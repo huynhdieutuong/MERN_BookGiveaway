@@ -8,7 +8,12 @@ import {
   TablePagination,
   TableRow,
   Paper,
+  Tooltip,
+  IconButton,
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 import BasicTableHead from './BasicTableHead';
 import BasicTableToolbar from './BasicTableToolbar';
@@ -49,11 +54,13 @@ const BasicTable = (props) => {
     children,
     addButton,
     editButton,
+    viewButton,
     onSearch,
     onDelete,
   } = props;
 
   const classes = useStyles();
+  const history = useHistory();
   const [order, setOrder] = React.useState('desc');
   const [orderBy, setOrderBy] = React.useState('createAt');
   const [page, setPage] = React.useState(0);
@@ -109,6 +116,19 @@ const BasicTable = (props) => {
                   return (
                     <TableRow hover role='checkbox' tabIndex={-1} key={row._id}>
                       <TableCell align='left'>
+                        {viewButton && (
+                          <Tooltip title='View'>
+                            <IconButton
+                              aria-label='view'
+                              aria-describedby={row._id}
+                              onClick={() =>
+                                history.push(`${viewButton}/${row._id}`)
+                              }
+                            >
+                              <VisibilityIcon />
+                            </IconButton>
+                          </Tooltip>
+                        )}
                         {editButton && (
                           <EditButton editButton={editButton} id={row._id} />
                         )}

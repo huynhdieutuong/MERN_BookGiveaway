@@ -17,13 +17,15 @@ import {
   CREATE_REQUEST,
   DELETE_REQUEST,
   GET_MY_REQUESTS,
+  CREATE_TRANSACTION,
+  GET_MY_TRANSACTIONS,
 } from '../types';
 
 const BookState = (props) => {
   const initialState = {
     loading: true,
     books: [],
-    myBooks: [],
+    myBooks: null,
     totalPages: 0,
     categories: [],
     filters: {
@@ -35,7 +37,8 @@ const BookState = (props) => {
     },
     book: null,
     requests: [],
-    myRequests: [],
+    myRequests: null,
+    myTransactions: null,
     error: null,
     category: {},
   };
@@ -52,6 +55,7 @@ const BookState = (props) => {
     book,
     requests,
     myRequests,
+    myTransactions,
     error,
     category,
   } = state;
@@ -272,6 +276,48 @@ const BookState = (props) => {
     }
   };
 
+  // Create transaction (Choose receiver)
+  const createTransaction = async (requestId) => {
+    try {
+      const res = await axios.post(
+        `/api/transactions`,
+        { requestId },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      dispatch({
+        type: CREATE_TRANSACTION,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
+  // Get my transactions
+  const getMyTransactions = async () => {
+    setLoading();
+
+    try {
+      const res = await axios.get('/api/transactions?limit=1000');
+
+      dispatch({
+        type: GET_MY_TRANSACTIONS,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response,
+      });
+    }
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -284,6 +330,7 @@ const BookState = (props) => {
         book,
         requests,
         myRequests,
+        myTransactions,
         error,
         category,
         getBooks,
@@ -298,6 +345,8 @@ const BookState = (props) => {
         createRequest,
         deleteRequest,
         getMyRequests,
+        createTransaction,
+        getMyTransactions,
       }}
     >
       {props.children}

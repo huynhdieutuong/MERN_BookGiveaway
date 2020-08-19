@@ -20,6 +20,7 @@ import {
   CREATE_TRANSACTION,
   GET_MY_TRANSACTIONS,
   GET_TRANSACTION,
+  CHANGE_TRANSACTION_STATUS,
 } from '../types';
 
 const BookState = (props) => {
@@ -340,6 +341,29 @@ const BookState = (props) => {
     }
   };
 
+  // Change transaction status
+  const changeTransactionStatus = async (id, status) => {
+    try {
+      const res = await axios.put(
+        `/api/transactions/${id}`,
+        { status },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      dispatch({
+        type: CHANGE_TRANSACTION_STATUS,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -371,6 +395,7 @@ const BookState = (props) => {
         createTransaction,
         getMyTransactions,
         getTransaction,
+        changeTransactionStatus,
       }}
     >
       {props.children}

@@ -74,10 +74,16 @@ exports.changeStatus = asyncHandler(async (req, res, next) => {
   if (!transaction)
     return next(new ErrorResponse('Transaction not found', 404));
 
-  // Only receiver can change transaction status
-  if (req.user.id !== transaction.receiver.id)
+  // Only receiver and giver can change transaction status
+  if (
+    req.user.id !== transaction.receiver.id &&
+    req.user.id !== transaction.giver.id
+  )
     return next(
-      new ErrorResponse('Only receiver can change transaction status', 400)
+      new ErrorResponse(
+        'Only receiver and giver can change transaction status',
+        400
+      )
     );
 
   // Prevent receiver re-change status

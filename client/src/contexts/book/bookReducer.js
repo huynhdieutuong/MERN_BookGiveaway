@@ -16,6 +16,7 @@ import {
   CREATE_TRANSACTION,
   GET_MY_TRANSACTIONS,
   GET_TRANSACTION,
+  CHANGE_TRANSACTION_STATUS,
 } from '../types';
 
 export default (state, action) => {
@@ -101,7 +102,6 @@ export default (state, action) => {
         myRequests: payload.data,
       };
     case CREATE_TRANSACTION:
-      console.log(payload.data);
       return {
         ...state,
       };
@@ -115,6 +115,11 @@ export default (state, action) => {
       return {
         ...state,
         loading: false,
+        transaction: payload.data,
+      };
+    case CHANGE_TRANSACTION_STATUS:
+      return {
+        ...state,
         transaction: payload.data,
       };
     case ERROR_BOOK:

@@ -18,9 +18,13 @@ import ProfileContext from '../../contexts/profile/profileContext';
 const Transaction = ({ match }) => {
   const id = match.params.id;
   const { profile } = useContext(ProfileContext);
-  const { loading, error, transaction, getTransaction } = useContext(
-    BookContext
-  );
+  const {
+    loading,
+    error,
+    transaction,
+    getTransaction,
+    changeTransactionStatus,
+  } = useContext(BookContext);
 
   useEffect(() => {
     getTransaction(id);
@@ -91,12 +95,20 @@ const Transaction = ({ match }) => {
           </Grid>
           <Grid item xs={12}>
             {status === 'pending' && profile && profile._id === giver._id && (
-              <Button variant='contained' color='secondary'>
+              <Button
+                variant='contained'
+                color='secondary'
+                onClick={() => changeTransactionStatus(_id, 'fail')}
+              >
                 Cancel Transaction
               </Button>
             )}
             {status === 'pending' && profile && profile._id === receiver._id && (
-              <Button variant='contained' color='primary'>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => changeTransactionStatus(_id, 'success')}
+              >
                 Mark as Received Book
               </Button>
             )}

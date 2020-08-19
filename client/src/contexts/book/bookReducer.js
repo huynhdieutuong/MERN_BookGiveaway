@@ -15,6 +15,7 @@ import {
   GET_MY_REQUESTS,
   CREATE_TRANSACTION,
   GET_MY_TRANSACTIONS,
+  GET_TRANSACTION,
 } from '../types';
 
 export default (state, action) => {
@@ -109,6 +110,12 @@ export default (state, action) => {
         ...state,
         loading: false,
         myTransactions: payload.data,
+      };
+    case GET_TRANSACTION:
+      return {
+        ...state,
+        loading: false,
+        transaction: payload.data,
       };
     case ERROR_BOOK:
       return {

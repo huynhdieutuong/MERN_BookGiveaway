@@ -19,6 +19,7 @@ import {
   GET_MY_REQUESTS,
   CREATE_TRANSACTION,
   GET_MY_TRANSACTIONS,
+  GET_TRANSACTION,
 } from '../types';
 
 const BookState = (props) => {
@@ -39,6 +40,7 @@ const BookState = (props) => {
     requests: [],
     myRequests: null,
     myTransactions: null,
+    transaction: null,
     error: null,
     category: {},
   };
@@ -56,6 +58,7 @@ const BookState = (props) => {
     requests,
     myRequests,
     myTransactions,
+    transaction,
     error,
     category,
   } = state;
@@ -318,6 +321,25 @@ const BookState = (props) => {
     }
   };
 
+  // Get transaction
+  const getTransaction = async (id) => {
+    setLoading();
+
+    try {
+      const res = await axios.get(`/api/transactions/${id}`);
+
+      dispatch({
+        type: GET_TRANSACTION,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_BOOK,
+        payload: error.response.data,
+      });
+    }
+  };
+
   return (
     <BookContext.Provider
       value={{
@@ -331,6 +353,7 @@ const BookState = (props) => {
         requests,
         myRequests,
         myTransactions,
+        transaction,
         error,
         category,
         getBooks,
@@ -347,6 +370,7 @@ const BookState = (props) => {
         getMyRequests,
         createTransaction,
         getMyTransactions,
+        getTransaction,
       }}
     >
       {props.children}

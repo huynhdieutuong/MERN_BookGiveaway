@@ -19,6 +19,7 @@ import ResetPassword from '../pages/auth/ResetPassword';
 import NotVerify from '../pages/auth/NotVerify';
 import Confirmation from '../pages/auth/Confirmation';
 import EditProfile from '../pages/profile/EditProfile';
+import Transaction from '../pages/profile/Transaction';
 
 const Routes = () => {
   const { loading, getProfile } = useContext(ProfileContext);
@@ -47,6 +48,7 @@ const Routes = () => {
       <PrivateRoute exact path='/edit-profile' component={EditProfile} />
       <PrivateRoute exact path='/add-book' component={AddBook} />
       <PrivateRoute exact path='/edit-book/:id' component={EditBook} />
+      <PrivateRoute exact path='/transactions/:id' component={Transaction} />
       <Route exact path='/:slug' component={Book} />
       <Route exact path='/:slug/:id' component={Books} /> {/* Category */}
       <Route component={NotFound} />

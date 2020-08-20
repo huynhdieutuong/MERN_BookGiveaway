@@ -54,14 +54,22 @@ router.put('/reset-password/:token', authController.resetPassword);
 // @route   GET  /api/auth/google/callback
 // @desc    Login with google
 // @access  Public
-router.get('/google', passportGoogle);
-router.get('/google/callback', passportGoogle, authController.socialOAuth);
+router.get('/oauth/google', passportGoogle);
+router.get(
+  '/oauth/google/callback',
+  passportGoogle,
+  authController.socialOAuth
+);
 
 // @route   GET  /api/auth/facebook
 // @route   GET  /api/auth/facebook/callback
 // @desc    Login with facebook
 // @access  Public
-router.get('/facebook', passportFacebook);
-router.get('/facebook/callback', passportFacebook, authController.socialOAuth);
+router.get('/oauth/facebook', passportFacebook);
+router.get(
+  '/oauth/facebook/callback',
+  passportFacebook,
+  authController.socialOAuth
+);
 
 module.exports = router;

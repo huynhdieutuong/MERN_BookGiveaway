@@ -48,7 +48,7 @@ const SocialButtons = () => {
                 className={classes.icon}
               />
             }
-            onClick={() => (window.location = '/api/auth/facebook')}
+            onClick={() => (window.location = '/api/auth/oauth/facebook')}
           >
             Facebook
           </Button>
@@ -64,7 +64,7 @@ const SocialButtons = () => {
                 className={classes.icon}
               />
             }
-            onClick={() => (window.location = '/api/auth/google')}
+            onClick={() => (window.location = '/api/auth/oauth/google')}
           >
             Google
           </Button>

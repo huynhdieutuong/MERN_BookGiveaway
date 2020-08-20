@@ -43,9 +43,14 @@ const Notifications = () => {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { loading, notifications, getNotifications, markRead } = useContext(
-    NotificationContext
-  );
+  const {
+    loading,
+    notifications,
+    getNotifications,
+    markRead,
+    markAllRead,
+    clearAll,
+  } = useContext(NotificationContext);
 
   const unReadNotifications = notifications.reduce((count, notification) => {
     const unRead = notification.isRead ? 0 : 1;
@@ -97,10 +102,15 @@ const Notifications = () => {
       >
         <Typography className={classes.header}>
           <span style={{ flexGrow: '1' }}>Notifications</span>
-          <span className={`${classes.headActions} ${classes.markAllRead}`}>
+          <span
+            className={`${classes.headActions} ${classes.markAllRead}`}
+            onClick={() => markAllRead()}
+          >
             Mark All as Read
           </span>
-          <span className={classes.headActions}>Clear All</span>
+          <span className={classes.headActions} onClick={() => clearAll()}>
+            Clear All
+          </span>
         </Typography>
         <Divider />
         {loading ? (

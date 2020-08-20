@@ -2,6 +2,8 @@ import {
   GET_NOTIFICATIONS,
   ERROR_NOTIFICATION,
   MARKREAD_NOTIFICATION,
+  MARKALLREAD_NOTIFICATIONS,
+  CLEARALL_NOTIFICATIONS,
 } from '../types';
 
 export default (state, action) => {
@@ -21,6 +23,16 @@ export default (state, action) => {
         notifications: state.notifications.map((notification) =>
           notification._id === payload.data._id ? payload.data : notification
         ),
+      };
+    case MARKALLREAD_NOTIFICATIONS:
+      return {
+        ...state,
+        notifications: payload.data,
+      };
+    case CLEARALL_NOTIFICATIONS:
+      return {
+        ...state,
+        notifications: [],
       };
     case ERROR_NOTIFICATION:
       return {

@@ -5,6 +5,8 @@ import {
   GET_NOTIFICATIONS,
   ERROR_NOTIFICATION,
   MARKREAD_NOTIFICATION,
+  MARKALLREAD_NOTIFICATIONS,
+  CLEARALL_NOTIFICATIONS,
 } from '../types';
 
 import NotificationContext from './notificationContext';
@@ -57,6 +59,39 @@ const NotificationState = (props) => {
     }
   };
 
+  // Mark as all read notifications
+  const markAllRead = async () => {
+    try {
+      const res = await axios.put('/api/notifications?limit=1000');
+
+      dispatch({
+        type: MARKALLREAD_NOTIFICATIONS,
+        payload: res.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_NOTIFICATION,
+        payload: error.response,
+      });
+    }
+  };
+
+  // Clear all notifications
+  const clearAll = async () => {
+    try {
+      await axios.delete('/api/notifications');
+
+      dispatch({
+        type: CLEARALL_NOTIFICATIONS,
+      });
+    } catch (error) {
+      dispatch({
+        type: ERROR_NOTIFICATION,
+        payload: error.response,
+      });
+    }
+  };
+
   return (
     <NotificationContext.Provider
       value={{
@@ -65,6 +100,8 @@ const NotificationState = (props) => {
         loading,
         getNotifications,
         markRead,
+        markAllRead,
+        clearAll,
       }}
     >
       {props.children}

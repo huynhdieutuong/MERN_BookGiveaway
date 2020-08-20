@@ -3,7 +3,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import MenuIcon from '@material-ui/icons/Menu';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
@@ -71,18 +70,8 @@ const Navbar = () => {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleMobileMenuClose(null);
-          history.push('/notifications');
-        }}
-      >
-        <IconButton aria-label='show 11 new notifications' color='inherit'>
-          <Badge badgeContent={11} color='secondary'>
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
+      <MenuItem onClick={() => handleMobileMenuClose(null)}>
+        <Notifications label='Notifications' />
       </MenuItem>
       <MenuItem
         onClick={() => {
@@ -90,8 +79,8 @@ const Navbar = () => {
           history.push('/messages');
         }}
       >
-        <IconButton aria-label='show 4 new mails' color='inherit'>
-          <Badge badgeContent={4} color='secondary'>
+        <IconButton aria-label='show 2 new mails' color='inherit'>
+          <Badge badgeContent={2} color='secondary'>
             <MailIcon />
           </Badge>
         </IconButton>
@@ -166,11 +155,10 @@ const Navbar = () => {
                 </IconButton>
                 <Notifications />
                 <IconButton
-                  aria-label='show 4 new mails'
                   color='inherit'
                   onClick={() => history.push('/messages')}
                 >
-                  <Badge badgeContent={4} color='secondary'>
+                  <Badge badgeContent={2} color='secondary'>
                     <MailIcon />
                   </Badge>
                 </IconButton>

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Notifications = () => {
+const Notifications = ({ label }) => {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -86,6 +86,7 @@ const Notifications = () => {
           <NotificationsIcon />
         </Badge>
       </IconButton>
+      {label && <p onClick={handleClick}>{label}</p>}
       <Popover
         id={id}
         open={open}

@@ -16,7 +16,7 @@ const Book = ({ match }) => {
   useEffect(() => {
     getBook(id);
     // eslint-disable-next-line
-  }, []);
+  }, [id]);
 
   if (loading || !book) return <Spinner />;
 

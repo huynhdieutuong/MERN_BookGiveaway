@@ -1,7 +1,11 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
 
-import { GET_NOTIFICATIONS, ERROR_NOTIFICATION } from '../types';
+import {
+  GET_NOTIFICATIONS,
+  ERROR_NOTIFICATION,
+  MARKREAD_NOTIFICATION,
+} from '../types';
 
 import NotificationContext from './notificationContext';
 import NotificationReducer from './notificationReducer';
@@ -34,6 +38,25 @@ const NotificationState = (props) => {
     }
   };
 
+  // Mark as read notification
+  const markRead = async (notification) => {
+    try {
+      if (!notification.isRead) {
+        const res = await axios.put(`/api/notifications/${notification._id}`);
+
+        dispatch({
+          type: MARKREAD_NOTIFICATION,
+          payload: res.data,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: ERROR_NOTIFICATION,
+        payload: error.response,
+      });
+    }
+  };
+
   return (
     <NotificationContext.Provider
       value={{
@@ -41,6 +64,7 @@ const NotificationState = (props) => {
         error,
         loading,
         getNotifications,
+        markRead,
       }}
     >
       {props.children}

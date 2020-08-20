@@ -1,5 +1,6 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import Moment from 'react-moment';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   IconButton,
@@ -40,32 +41,43 @@ const useStyles = makeStyles((theme) => ({
 
 const Notifications = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { loading, notifications, getNotifications } = useContext(
+  const { loading, notifications, getNotifications, markRead } = useContext(
     NotificationContext
   );
 
+  const unReadNotifications = notifications.reduce((count, notification) => {
+    const unRead = notification.isRead ? 0 : 1;
+    return count + unRead;
+  }, 0);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    getNotifications();
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const handleClickItem = async (notification, bookSlug) => {
+    await markRead(notification);
+    handleClose();
+    history.push(`/${bookSlug}`);
+  };
+
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
+  useEffect(() => {
+    getNotifications();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <Fragment>
-      <IconButton
-        aria-label='show 17 new notifications'
-        color='inherit'
-        aria-describedby={id}
-        onClick={handleClick}
-      >
-        <Badge badgeContent={17} color='secondary'>
+      <IconButton color='inherit' aria-describedby={id} onClick={handleClick}>
+        <Badge badgeContent={unReadNotifications} color='secondary'>
           <NotificationsIcon />
         </Badge>
       </IconButton>
@@ -99,7 +111,7 @@ const Notifications = () => {
             width={400}
             itemSize={100}
             itemCount={notifications.length}
-            itemData={{ notifications, classes }}
+            itemData={{ notifications, classes, handleClickItem }}
           >
             {renderRow}
           </FixedSizeList>
@@ -121,6 +133,7 @@ const renderRow = (props) => {
       button
       style={style}
       key={index}
+      onClick={() => data.handleClickItem(notification, notification.book.slug)}
     >
       <ListItemAvatar>
         <Avatar

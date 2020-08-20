@@ -27,6 +27,7 @@ import Drawer from './Drawer';
 
 import ProfileContext from '../../contexts/profile/profileContext';
 import AuthContext from '../../contexts/auth/authContext';
+import Notifications from './Notifications';
 
 const Navbar = () => {
   const history = useHistory();
@@ -163,14 +164,7 @@ const Navbar = () => {
                     className={classes.avatar}
                   />
                 </IconButton>
-                <IconButton
-                  aria-label='show 17 new notifications'
-                  color='inherit'
-                >
-                  <Badge badgeContent={17} color='secondary'>
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
+                <Notifications />
                 <IconButton
                   aria-label='show 4 new mails'
                   color='inherit'
@@ -236,8 +230,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   avatar: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
+    width: theme.spacing(3),
+    height: theme.spacing(3),
   },
 }));
 

@@ -6,6 +6,7 @@ import './App.css';
 import BookState from './contexts/book/BookState';
 import AuthState from './contexts/auth/AuthState';
 import ProfileState from './contexts/profile/ProfileState';
+import NotificationState from './contexts/notification/NotificationState';
 
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -15,25 +16,27 @@ import Routes from './routing/Routes';
 const App = () => {
   return (
     <ProfileState>
-      <AuthState>
-        <BookState>
-          <Router>
-            {/* Header */}
-            <Navbar />
+      <NotificationState>
+        <AuthState>
+          <BookState>
+            <Router>
+              {/* Header */}
+              <Navbar />
 
-            {/* Content */}
-            <Container
-              fixed
-              style={{ marginTop: '40px', marginBottom: '40px' }}
-            >
-              <Routes />
-            </Container>
+              {/* Content */}
+              <Container
+                fixed
+                style={{ marginTop: '40px', marginBottom: '40px' }}
+              >
+                <Routes />
+              </Container>
 
-            {/* Footer */}
-            <Footer />
-          </Router>
-        </BookState>
-      </AuthState>
+              {/* Footer */}
+              <Footer />
+            </Router>
+          </BookState>
+        </AuthState>
+      </NotificationState>
     </ProfileState>
   );
 };

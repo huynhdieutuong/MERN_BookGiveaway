@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Moment from 'react-moment';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +8,7 @@ import {
   CardActions,
   Avatar,
   Button,
+  CircularProgress,
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
@@ -18,6 +19,7 @@ import DeleteButton from '../table/DeleteButton';
 const ParticipantItem = ({ request }) => {
   const classes = useStyles();
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const { profile } = useContext(ProfileContext);
   const { book, deleteRequest, createTransaction } = useContext(BookContext);
   const { user, createAt } = request;
@@ -25,9 +27,11 @@ const ParticipantItem = ({ request }) => {
   const isOwnerBook = profile && profile._id === book.user._id;
   const isOwnerRequest = profile && profile._id === request.user._id;
 
-  const chooseReceiver = () => {
-    createTransaction(request._id);
-    history.push('/profile');
+  const chooseReceiver = async () => {
+    setLoading(true);
+    const transactionId = await createTransaction(request._id);
+    setLoading(false);
+    history.push(`/transactions/${transactionId}`);
   };
 
   return (
@@ -44,13 +48,19 @@ const ParticipantItem = ({ request }) => {
       />
       {isOwnerBook && (
         <CardActions disableSpacing>
-          <Button
-            variant='contained'
-            className={classes.button}
-            onClick={chooseReceiver}
-          >
-            Choose
-          </Button>
+          <div className={classes.wrapper}>
+            <Button
+              variant='contained'
+              className={classes.button}
+              onClick={chooseReceiver}
+              disabled={loading}
+            >
+              Choose
+            </Button>
+            {loading && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+          </div>
         </CardActions>
       )}
     </Card>
@@ -67,6 +77,17 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     width: '100%',
+  },
+  wrapper: {
+    position: 'relative',
+    width: '100%',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 }));
 

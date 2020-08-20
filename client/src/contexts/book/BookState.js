@@ -295,6 +295,8 @@ const BookState = (props) => {
         type: CREATE_TRANSACTION,
         payload: res.data,
       });
+
+      return res.data.data._id;
     } catch (error) {
       dispatch({
         type: ERROR_BOOK,

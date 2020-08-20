@@ -38,3 +38,7 @@ export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const CHANGE_AVATAR = 'CHANGE_AVATAR';
 export const UPDATE_FAIL = 'UPDATE_FAIL';
 export const ERROR_PROFILE = 'ERROR_PROFILE';
+
+// Notification
+export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
+export const ERROR_NOTIFICATION = 'ERROR_NOTIFICATION';

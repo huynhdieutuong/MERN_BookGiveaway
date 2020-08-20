@@ -94,6 +94,11 @@ exports.changeStatus = asyncHandler(async (req, res, next) => {
   transaction.status = req.body.status;
   await transaction.save();
 
+  // Change book status if giver cancel transaction
+  if (req.body.status === 'fail') {
+    await Book.findByIdAndUpdate(transaction.book.id, { isGave: false });
+  }
+
   res.status(200).json({
     success: true,
     data: transaction,
